@@ -8,7 +8,8 @@
 
 #import "MKBlockAdditions.h"
 
-@interface UIAlertView (Block) <UIAlertViewDelegate> 
+@interface UIAlertView (Block) <UIAlertViewDelegate>
+
 + (UIAlertView*) alertViewWithTitle:(NSString*) title 
                             message:(NSString*) message;
 

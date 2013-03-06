@@ -47,9 +47,22 @@ static GetAndSaveData *sharedGetAndSave;
 #pragma mark - Getting and Saving Favorites
 
 // These are stored in .plists, and are User-assigned
--(NSMutableArray *)arrayForKey:(NSString *)itemsList
+-(NSMutableDictionary *)favoritesDictionaryForName:(NSString *)podcastName
 {
-    return [allItems objectForKey:itemsList];
+    return [allItems objectForKey:podcastName];
+}
+
+#define KEY_FOR_UNFINISHED_DOWNLOADS @"To Download"
+-(void)setDownloadsDictionary:(NSMutableDictionary *)dictionaryOfDownloads
+{
+    [allItems setObject:dictionaryOfDownloads
+                 forKey:KEY_FOR_UNFINISHED_DOWNLOADS];
+    [allItems writeToFile:path
+               atomically:YES];
+}
+-(NSMutableDictionary *)dictionaryOfDownloads
+{
+    return [allItems objectForKey:KEY_FOR_UNFINISHED_DOWNLOADS];
 }
 
 -(NSArray *)getAllKeys
@@ -58,22 +71,28 @@ static GetAndSaveData *sharedGetAndSave;
     return [allItems allKeys];
 }
 -(NSArray *)getAllNames{
-    NSMutableDictionary *dict = [allItems objectForKey:@"Names"];
-    
-    return [dict allKeys];
+    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:[allItems allKeys]];
+    for (NSString *string in array) {
+        if ([string isEqualToString:KEY_FOR_UNFINISHED_DOWNLOADS]) {
+            [array removeObjectAtIndex:[array indexOfObject:KEY_FOR_UNFINISHED_DOWNLOADS]];
+            break;
+        }
+    }
+    NSArray *fixedArray = [[NSArray alloc] initWithArray:(NSArray *)array];
+    return fixedArray;
 }
 
--(void)setFavorites:(NSMutableArray *)array ForKey:(NSString *)itemsList
+-(void)setFavorites:(NSMutableDictionary *)dictionaryOfFavoritedEpisodes ForName:(NSString *)podcastName
 {
-    [allItems setObject:array
-                 forKey:itemsList];
+    [allItems setObject:dictionaryOfFavoritedEpisodes
+                 forKey:podcastName];
     [allItems writeToFile:path
                atomically:YES];
     
     if(![allItems writeToFile:path atomically:YES]){}
 }
--(void)deleteFavoritesForKey:(NSString *)key{
-    [allItems removeObjectForKey:key];
+-(void)deleteFavoritesForName:(NSString *)podcastName{
+    [allItems removeObjectForKey:podcastName];
     [allItems writeToFile:path
                atomically:YES];
 }
@@ -99,14 +118,24 @@ static GetAndSaveData *sharedGetAndSave;
 // These are never saved to a .plist
 // We want the app to check for new feeds and podcasts every time it restarts
 // But while operating, the app should freely move between Views, so the info is stored in active memory
+-(void)setParsedFeed:(NSArray *)feed forKey:(NSString *)key
+{
+    if (!allParsedFeeds) {
+        allParsedFeeds = [[NSMutableDictionary alloc] init];
+    }
+    [allParsedFeeds setObject:feed forKey:key];
+}
+-(NSArray *)arrayForParsedFeed:(NSString *)name
+{
+    return [allParsedFeeds objectForKey:name];
+}
 -(void)setParsedNamesFeeds:(NSArray *)feeds
 {
-    allParsedFeeds = [[NSArray alloc] initWithArray:feeds];
-    self.doneProcessingFeed = YES;
+    allParsedNamesFeeds = [[NSArray alloc] initWithArray:feeds];
 }
--(NSArray *)arrayOfParsedFeeds
+-(NSArray *)arrayOfParsedNamesFeeds
 {
-    return allParsedFeeds;
+    return allParsedNamesFeeds;
 }
 
 +(GetAndSaveData *)sharedGetAndSave

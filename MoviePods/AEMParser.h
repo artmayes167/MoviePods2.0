@@ -9,15 +9,18 @@
 #import <Foundation/Foundation.h>
 
 @protocol ParserDelegate <NSObject>
--(void)receivedItems:(NSArray *)theItems;
+-(void)receivedItems:(NSMutableArray *)theItems forName:(NSString *)name WithTag:(int)tag;
 @end
 
 @interface AEMParser : NSObject <NSXMLParserDelegate> {
     id delegate;
     NSMutableDictionary *item;
     NSString *currentElement;
+    NSString *nameOfPodcast;
 }
 
--(void)parseFeed:(int)feedTitleIndex withDelegate:(id)aDelegate;
+@property (nonatomic) int tag;
+
+-(void)parseFeed:(NSData *)feed withName:(NSString *)name andDelegate:(id)aDelegate;
 
 @end

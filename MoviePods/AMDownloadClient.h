@@ -9,5 +9,5 @@
 #import "AFHTTPClient.h"
 
 @interface AMDownloadClient : AFHTTPClient
-
++(AMDownloadClient *)sharedDownloadClient;
 @end

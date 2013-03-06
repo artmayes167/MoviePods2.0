@@ -33,21 +33,12 @@
 @synthesize currentSummary;
 @synthesize itunesSummary;
 
--(NSArray *)arrayToParse{
-    if (!_arrayToParse) _arrayToParse = [[GetAndSaveData sharedGetAndSave] arrayOfFeeds];
-    return _arrayToParse;
-}
 
--(void)parseNamesWithDelegate:(id)aDelegate {
+-(void)parseName:(NSData *)name WithDelegate:(id)aDelegate {
     self.delegate = aDelegate;
     
-    if ([[GetAndSaveData sharedGetAndSave] arrayOfFeeds]) {
-        [self podcastNamesAreReady];
-    } else {
-        feedManager = [[AEMFeedManager alloc] init];
-        feedManager.delegate = self;
-        [feedManager downloadPodcastNames];
-    }
+    index = 0; //reset index
+    [self parseFeed:name];
 }
 
 -(NSMutableArray *)items
@@ -56,20 +47,9 @@
     return _items;
 }
 
--(void)podcastNamesAreReady
+-(void)parseFeed:(NSData *)name
 {
-    index = 0; //reset index
-    [self parseFeedAtIndex];
-}
--(void)failedToDownload
-{
-    [self.delegate feedsUnavailable];
-}
--(void)parseFeedAtIndex
-{
-    NSData *podcastItem = self.arrayToParse[index];
-    
-    NSXMLParser *rssParser = [[NSXMLParser alloc] initWithData:podcastItem];
+    NSXMLParser *rssParser = [[NSXMLParser alloc] initWithData:name];
     
     [rssParser setDelegate:self];
     
@@ -125,18 +105,7 @@
 }
 
 -(void)parserDidEndDocument:(NSXMLParser *)parser {
-    [self.items addObject:[item copy]];
-    index++;
-    if (index < PODCAST_COUNT) {
-        item = nil;
-        currentTitle = nil;
-        currentSummary = nil;
-        currentElement = nil;
-        [self parseFeedAtIndex];
-    } else {
-        [[GetAndSaveData sharedGetAndSave] setParsedNamesFeeds:self.items];
-        if ([self.delegate respondsToSelector:@selector(namesReady:)]) [self.delegate namesReady:self.items];
-    }
+        if ([self.delegate respondsToSelector:@selector(nameReady:forTag:)]) [self.delegate nameReady:item forTag:self.tag];
 }
 -(void)dealloc
 {

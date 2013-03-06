@@ -6,23 +6,21 @@
 //  Copyright (c) 2013 Arthur Mayes. All rights reserved.
 //
 
-#import "AEMFeedManager.h"
-
 @protocol AEMParseNamesDelegate <NSObject>
 
--(void)namesReady:(NSArray *)names;
--(void)feedsUnavailable;
+-(void)nameReady:(NSMutableDictionary *)name forTag:(int)tag;
 @end
 
-@interface AEMParseNames : NSObject<AEMFeedManagerDelegate, NSXMLParserDelegate>{
+@interface AEMParseNames : NSObject<NSXMLParserDelegate>{
     NSMutableDictionary *item;
     NSString *currentElement;
-    AEMFeedManager *feedManager;
     BOOL record;
     BOOL wrongTitle;
     NSUInteger index;
 }
 
--(void)parseNamesWithDelegate:(id)aDelegate;
+@property (nonatomic) int tag;
 @property (weak, nonatomic) id<AEMParseNamesDelegate>delegate;
+
+-(void)parseName:(NSData *)name WithDelegate:(id)aDelegate;
 @end

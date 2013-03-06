@@ -28,6 +28,8 @@
  */
 @interface AFHTTPRequestOperation : AFURLConnectionOperation
 
+@property (nonatomic) int tag;
+
 ///----------------------------------------------
 /// @name Getting HTTP URL Connection Information
 ///----------------------------------------------

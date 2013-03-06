@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AMEpisodeViewController : UIViewController
-
+@interface AMEpisodeViewController : UIViewController{
+    BOOL isPlaying;
+    BOOL wait;
+    BOOL sliderMoved;
+    BOOL sliderViewIsVisible;
+    BOOL playerExists;
+    NSTimer *playTimer;
+}
+@property (nonatomic) int currentPodcast;
+@property (nonatomic, strong) NSDictionary *episode;
 @end

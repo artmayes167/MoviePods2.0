@@ -8,6 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AMInitiateDownload : NSObject
+@protocol AMIniateDownloadsDelegate <NSObject>
 
+@optional
+-(void)downloadingFailed;
+-(void)downloadReady:(NSString *)nameOfDownload;
+
+@end
+
+@interface AMInitiateDownload : NSObject
+@property (nonatomic, strong) NSMutableDictionary *downloadingDictionary;
+@property (nonatomic, weak) id<AMIniateDownloadsDelegate> delegate;
+@property (nonatomic, strong) NSMutableArray *includedNames;
+-(void)downloadPodcast:(NSDictionary *)dict; // toPath:(NSString *)path;
++(AMInitiateDownload *)sharedInitiator;
 @end

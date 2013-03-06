@@ -9,10 +9,24 @@
 #import "AMPreferencesViewController.h"
 
 @interface AMPreferencesViewController ()
-
+- (IBAction)wiFiOnly:(UISwitch *)sender;
+- (IBAction)offLineMode:(UISwitch *)sender;
+@property (nonatomic, strong) NSArray *cellIdentifiers;
+@property (nonatomic, strong) UISwitch *wifiSwitch;
+@property (nonatomic, strong) UISwitch *offlineSwitch;
 @end
 
 @implementation AMPreferencesViewController
+
+#define WIFI_DEFAULTS_KEY @"wifiOnly"
+#define OFFLINE_DEFAULTS_KEY @"offlineOnly"
+-(NSArray *)cellIdentifiers
+{
+    if (!_cellIdentifiers) {
+        _cellIdentifiers = @[@"WiFi", @"OffLine"];
+    }
+    return _cellIdentifiers;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,12 +40,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"default wifi = %u", [defaults boolForKey:WIFI_DEFAULTS_KEY]);
+    [self.wifiSwitch setOn:[defaults boolForKey:WIFI_DEFAULTS_KEY] animated:NO];
+    [self.offlineSwitch setOn:[defaults boolForKey:OFFLINE_DEFAULTS_KEY] animated:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,78 +61,78 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [self.cellIdentifiers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifiers[indexPath.row] forIndexPath:indexPath];
     
-    // Configure the cell...
+    for (UIView *view in [cell.contentView subviews]) {
+        if ([view isKindOfClass:[UISwitch class]]) {
+            switch (indexPath.row) {
+                case 0:
+                    self.wifiSwitch = (UISwitch *)view;
+                    break;
+                case 1:
+                    self.offlineSwitch = (UISwitch *)view;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    
 }
 
+-(void)updatePreferences
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:self.wifiSwitch.on forKey:WIFI_DEFAULTS_KEY];
+    [defaults setBool:self.offlineSwitch.on forKey:OFFLINE_DEFAULTS_KEY];
+    [defaults synchronize];
+}
+
+- (IBAction)wiFiOnly:(UISwitch *)sender {
+    NSLog(@"Switched wifi");
+    if (sender.on) {
+        if (self.offlineSwitch.on) {
+            [self.offlineSwitch setOn:NO animated:YES];
+        }
+    }
+    [self updatePreferences];
+}
+
+- (IBAction)offLineMode:(UISwitch *)sender {
+    NSLog(@"Switched offline, value = %u", sender.on);
+    if (sender.on) {
+        if (self.wifiSwitch.on) {
+            [self.wifiSwitch setOn:NO animated:YES];
+        }
+    }
+    [self updatePreferences];
+}
+
+-(void)dealloc
+{
+#ifdef DEBUG
+	NSLog(@"dealloc %@", self);
+#endif
+}
 @end

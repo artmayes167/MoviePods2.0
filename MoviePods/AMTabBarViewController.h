@@ -10,4 +10,5 @@
 
 @interface AMTabBarViewController : UITabBarController
 
+@property (nonatomic)int selectedPodcast;
 @end

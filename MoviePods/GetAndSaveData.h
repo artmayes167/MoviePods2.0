@@ -10,21 +10,30 @@
     NSMutableDictionary *allItems;
     NSString *path;
     NSArray *allFeeds;
-    NSArray *allParsedFeeds;
+    NSArray *allParsedNamesFeeds;
+    NSMutableDictionary *allParsedFeeds;
 }
 
 @property (nonatomic) BOOL doneProcessingFeed;
 
 +(GetAndSaveData *)sharedGetAndSave;
--(NSMutableArray *)arrayForKey:(NSString *)itemsList;
+-(NSMutableDictionary *)favoritesDictionaryForName:(NSString *)podcastName;
+
+-(void)setDownloadsDictionary:(NSMutableDictionary *)dictionaryOfDownloads;
+-(NSMutableDictionary *)dictionaryOfDownloads;
+
 -(NSArray *)getAllKeys;
--(void)setFavorites:(NSMutableArray *)array ForKey:(NSString *)itemsList;
--(void)deleteFavoritesForKey:(NSString *)key;
+-(NSArray *)getAllNames;
+
+-(void)setFavorites:(NSMutableDictionary *)dictionaryOfFavoritedEpisodes ForName:(NSString *)podcastName;
+-(void)deleteFavoritesForName:(NSString *)podcastName;
 
 -(void)setFeeds:(NSArray *)feeds;
 -(NSArray *)arrayOfFeeds;
 -(NSData *)feedDataAtIndex:(int)index;
 
 -(void)setParsedNamesFeeds:(NSArray *)feeds;
--(NSArray *)arrayOfParsedFeeds;
+-(NSArray *)arrayOfParsedNamesFeeds;
+-(void)setParsedFeed:(NSArray *)feed forKey:(NSString *)key;
+-(NSArray *)arrayForParsedFeed:(NSString *)name;
 @end

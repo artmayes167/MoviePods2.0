@@ -8,6 +8,15 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>MoviePodsIcon.png</string>
+		<string>MoviePodsIconSmallRetina.png</string>
+		<string>MoviePodsIconRetina.png</string>
+		<string>MoviePodsIcon-Small@2x.png</string>
+		<string>MoviePodsIcon-Small.png</string>
+		<string>MoviePodsIcon-Small.50.png</string>
+	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.ArthurMayes.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>

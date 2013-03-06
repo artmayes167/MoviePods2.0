@@ -7,6 +7,7 @@
 //
 
 #import "AEMParser.h"
+#import "AEMParseNames.h"
 #import "GetAndSaveData.h"
 
 @interface AEMParser ()
@@ -33,11 +34,12 @@
 
 
 //parse feeds that have already been saved in temporary data
--(void)parseFeed:(int)feedTitleIndex withDelegate:(id)aDelegate{
+-(void)parseFeed:(NSData *)feed withName:(NSString *)name andDelegate:(id)aDelegate{
     delegate = aDelegate;
+    nameOfPodcast = name;
     self.items = [[NSMutableArray alloc] init];
-    responseData = [[GetAndSaveData sharedGetAndSave] feedDataAtIndex:feedTitleIndex];
-    NSXMLParser *rssParser = [[NSXMLParser alloc] initWithData:responseData];
+    
+    NSXMLParser *rssParser = [[NSXMLParser alloc] initWithData:feed];
     
     [rssParser setDelegate:self];
     
@@ -48,6 +50,7 @@
 #pragma mark rssParser methods
 
 -(void)parserDidStartDocument:(NSXMLParser *)parser {
+    
 }
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
@@ -55,6 +58,7 @@
     
     if ([elementName isEqualToString:@"item"]) {
         item = [[NSMutableDictionary alloc] init];
+        [item setObject:nameOfPodcast forKey:@"name"];
         self.currentTitle = [[NSMutableString alloc] init];
         self.currentDate = [[NSMutableString alloc] init];
         self.currentSummary = [[NSMutableString alloc] init];
@@ -119,9 +123,9 @@
 }
 
 -(void)parserDidEndDocument:(NSXMLParser *)parser {
-    if ([delegate respondsToSelector:@selector(receivedItems:)]){
-        [delegate receivedItems:items];
-        items = nil;
+    if ([delegate respondsToSelector:@selector(receivedItems:forName:WithTag:)]){
+        [delegate receivedItems:items forName:nameOfPodcast WithTag:self.tag];
+        //items = nil;
     }
     else
     {

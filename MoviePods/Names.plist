@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Sites</key>
+	<array>
+		<string>http://www.directorsclubpodcast.com/</string>
+		<string>http://www.rowthree.com/category/cinecast/</string>
+		<string>http://www.thematinee.ca/</string>
+		<string>http://filmjive.wordpress.com/tag/film-jive/</string>
+		<string>http://www.rowthree.com/mamo-archive/</string>
+		<string>http://www.filmjunk.com/</string>
+	</array>
+	<key>Images</key>
+	<array>
+		<string>DC_logo.jpg</string>
+		<string>Row3Logo-FINAL.png</string>
+		<string>MatineeIcon.jpg</string>
+		<string>FilmJive.jpg</string>
+		<string>mamo.jpg</string>
+		<string>fj-logo-nav.gif</string>
+	</array>
+	<key>Addresses</key>
+	<array>
+		<string>http://directorsclubpodcast.libsyn.com/rss</string>
+		<string>http://www.rowthree.com/category/cinecast/feed/</string>
+		<string>http://thematinee.ca/feed/podcast/</string>
+		<string>http://feeds.feedburner.com/FilmJive?format=xml</string>
+		<string>http://www.rowthree.com/category/mamo!/feed/</string>
+		<string>http://feeds.feedburner.com/filmjunk</string>
+	</array>
+	<key>Favorites</key>
+	<array>
+		<string>DirectorsClubFavorites</string>
+		<string>CinecastFavorites</string>
+		<string>MatineeFavorites</string>
+		<string>FilmJiveFavorites</string>
+		<string>MamoFavorites</string>
+		<string>FilmJunkFavorites</string>
+	</array>
+	<key>Podcast</key>
+	<array>
+		<string>Director&apos;s Club</string>
+		<string>Cinecast</string>
+		<string>The Matinee</string>
+		<string>Film Jive</string>
+		<string>Mamo!</string>
+		<string>Film Junk</string>
+	</array>
+</dict>
+</plist>

@@ -6,13 +6,37 @@
 //  Copyright (c) 2013 Arthur Mayes. All rights reserved.
 //
 
+#import "AMAppDelegate.h"
 #import "AMRecentItemsViewController.h"
+#import "AMEpisodeViewController.h"
+#import "GetKeyStrings.h"
+#import "GetAndSaveData.h"
 
 @interface AMRecentItemsViewController ()
-
+@property (nonatomic, strong) NSArray *currentItemArray;
+@property (nonatomic) int podcastToLoad;
 @end
 
 @implementation AMRecentItemsViewController
+
+-(int)podcastToLoad
+{
+    AMAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    return appDelegate.podcastToShow;
+}
+
+-(NSArray *)currentItemArray{
+    if(!_currentItemArray)
+    {
+        if (self.view.tag < PODCAST_COUNT && [[GetAndSaveData sharedGetAndSave]arrayForParsedFeed:[[GetKeyStrings sharedKeyStrings]nameAtIndex:self.podcastToLoad]]) {
+            _currentItemArray = [[GetAndSaveData sharedGetAndSave]arrayForParsedFeed:[[GetKeyStrings sharedKeyStrings]nameAtIndex:self.podcastToLoad]];
+        } else {
+            _currentItemArray = nil;
+        }
+        
+    }
+    return _currentItemArray;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,34 +50,48 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.parentViewController.title = @"Episodes";
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, 90.0)];
+    headerView.backgroundColor = [UIColor blackColor];
+    
+    UIImage *podcasterImage = [UIImage imageNamed:[[GetKeyStrings sharedKeyStrings]imageNameAtIndex:self.podcastToLoad]];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 115.0f, 90.0f)];
+    imageView.image = podcasterImage;
+    [headerView addSubview:imageView];
+    
+    CGRect contentRect = headerView.bounds;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(120.0f, 0.0f, contentRect.size.width - 120.0f, contentRect.size.height)];
+    
+    NSDictionary *podcastDictionary;
+    if ([[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds]) {
+        podcastDictionary = [[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds][self.podcastToLoad];
+    } else {
+        podcastDictionary = @{@"description" : @"Unavailable in offline mode", @"itunesSummary" : @"Unavailable in offline mode"};
+    }
+    
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.numberOfLines = 0;
+    label.font = [UIFont fontWithName:@"Helvetica" size:9.0f];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.text = self.podcastToLoad == 5 ? [podcastDictionary objectForKey:@"description"] : [podcastDictionary objectForKey:@"itunesSummary"];
+    [headerView addSubview:label];
+    self.tableView.tableHeaderView = headerView;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+	return [[GetKeyStrings sharedKeyStrings]nameAtIndex:self.podcastToLoad];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    return [self.currentItemArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -61,61 +99,21 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    // Configure the cell...
-    
+    cell.textLabel.text = [self.currentItemArray[indexPath.row] objectForKey:@"title"];
+    cell.textLabel.font = [UIFont systemFontOfSize:12];
+    cell.textLabel.adjustsFontSizeToFitWidth = YES;
+    cell.tag = indexPath.row;
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UITableViewCell *)sender
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    //NSLog(@"sender's class is %@", [sender class]);
+    AMEpisodeViewController *episodeVC = (AMEpisodeViewController *)segue.destinationViewController;
+    episodeVC.currentPodcast = self.podcastToLoad;
+    episodeVC.episode = self.currentItemArray[sender.tag];
+    
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
-}
 
 @end
