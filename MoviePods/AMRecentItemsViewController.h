@@ -1,5 +1,5 @@
 //
-//  AMViewController.h
+//  AMRecentItemsViewController.h
 //  MoviePods
 //
 //  Created by Arthur Mayes on 2/26/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AMViewController : UIViewController
+@interface AMRecentItemsViewController : UITableViewController
 
 @end
