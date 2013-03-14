@@ -127,6 +127,21 @@
     return self;
 }
 
+-(void)fixThePodcastLink
+{
+    NSString *link = [self.episode objectForKey:@"podcastLink"];
+    //NSLog(@"%@", link);
+    if (link.length < 5) {
+        NSString *tempString = [self.episode objectForKey:@"itunesSummary"] ? [self.episode objectForKey:@"itunesSummary"] : [self.episode objectForKey:@"summary"];
+        NSString *summary = [tempString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSRange range = [summary rangeOfString:@"URL: "];
+        //NSLog(@"range = %i, object at range = %@", range.location, [summary substringFromIndex:range.location+5]);
+        NSMutableDictionary *tempEpisode = [self.episode mutableCopy];
+        [tempEpisode setObject:[summary substringFromIndex:range.location+5] forKey:@"podcastLink"];
+        self.episode = tempEpisode;
+    }
+}
+
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad
@@ -163,6 +178,8 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    if (self.currentPodcast == 4) [self fixThePodcastLink]; // mamo puts the link in their summary
+    
     self.episodeTitle.text = [self.episode objectForKey:@"title"];
     if ([self.episode objectForKey:@"date"]) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -170,35 +187,27 @@
         [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
         
         self.episodeDate.text = [dateFormatter stringFromDate:[self.episode objectForKey:@"date"]];
-    } else {
-        self.episodeDate.text = @"";
-    }
-    if (![self.episode objectForKey:@"itunesSummary"])
-    {
-        [self.episodeWebView loadHTMLString:[self.episode objectForKey:@"summary"]
-                                baseURL:nil];
-    } else
-    {
-        [self.episodeWebView loadHTMLString:[self.episode objectForKey:@"itunesSummary"]
-                                baseURL:nil];
-    }
-    if ([self isAFavorite]) {
-        self.favoriteButton.tintColor = [UIColor yellowColor];
-    }
+    } else self.episodeDate.text = @"";
+    
+    if (![self.episode objectForKey:@"itunesSummary"]) [self.episodeWebView loadHTMLString:[self.episode objectForKey:@"summary"]
+                                                                                   baseURL:nil];
+    else [self.episodeWebView loadHTMLString:[self.episode objectForKey:@"itunesSummary"]
+                                     baseURL:nil];
+    
+    if ([self isAFavorite]) self.favoriteButton.tintColor = [UIColor yellowColor];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     if (playerExists) {
-        NSLog(@"Called to player");
         [self.player stop];
         [playTimer invalidate];
     }
-    if ([self.activityIndicator isAnimating]) {
-        [self.activityIndicator stopAnimating];
-    }
+    if ([self.activityIndicator isAnimating]) [self.activityIndicator stopAnimating];
 }
+
 -(void)viewDidDisappear:(BOOL)animated
 {
     
@@ -208,11 +217,8 @@
 - (IBAction)play:(id)sender 
 {
     if ([[AEMDownloads sharedDownloads]episodeForPodcast:[[GetKeyStrings sharedKeyStrings]nameAtIndex:self.currentPodcast] titled:[self.episode objectForKey:@"title"]]) {
-        if (!sliderViewIsVisible) {
-            [self performSliderViewEnteringAnimation];
-        } else {
-            [self performSliderViewExitingAnimation];
-        }
+        if (!sliderViewIsVisible) [self performSliderViewEnteringAnimation];
+        else [self performSliderViewExitingAnimation];
         
         NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
         for (NSUInteger i = 0; i < [toolbarItems count]; i++) {
@@ -279,7 +285,7 @@
 {
     if (!wait) {
         if (!isPlaying) {
-            NSLog(@"NotPlaying");
+            //NSLog(@"NotPlaying");
             wait = YES;
             NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
             for (NSUInteger i = 0; i < [toolbarItems count]; i++) {
@@ -293,28 +299,29 @@
             }
         }
         
-        if (!sliderMoved) { // This prevents the slider from bouncing back and forth
-            [self.amSlider setValue:self.player.currentTime animated:YES];
-        } else {
-            sliderMoved = NO;
-        }
+        if (!sliderMoved) [self.amSlider setValue:self.player.currentTime animated:YES]; // This prevents the slider from bouncing back and forth
+        else sliderMoved = NO;
         
-        int hours, minutes, seconds;
-        hours = (int)self.player.currentTime / 3600;
-        minutes = ((int)self.player.currentTime % 3600)/60;
-        seconds = ((int)self.player.currentTime % 3600)%60;
-        
-        int total;
-        int totalHours, totalMinutes, totalSeconds;
-        total = (int)self.player.duration -(int)self.player.currentTime;
-        totalHours = total/3600;
-        totalMinutes = (total % 3600)/60;
-        totalSeconds = (total % 3600)%60;
-        
-        self.startLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d", hours, minutes, seconds];
-        self.endLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d", totalHours, totalMinutes, totalSeconds];
+        [self setTimeLabels];
     }
 
+}
+-(void)setTimeLabels
+{
+    int hours, minutes, seconds;
+    hours = (int)self.player.currentTime / 3600;
+    minutes = ((int)self.player.currentTime % 3600)/60;
+    seconds = ((int)self.player.currentTime % 3600)%60;
+    
+    int total;
+    int totalHours, totalMinutes, totalSeconds;
+    total = (int)self.player.duration -(int)self.player.currentTime;
+    totalHours = total/3600;
+    totalMinutes = (total % 3600)/60;
+    totalSeconds = (total % 3600)%60;
+    
+    self.startLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d", hours, minutes, seconds];
+    self.endLabel.text = [NSString stringWithFormat:@"%02d:%02d:%02d", totalHours, totalMinutes, totalSeconds];
 }
 
 - (IBAction)moveToPointInPodcast:(UISlider *)sender
@@ -324,7 +331,24 @@
     isPlaying = self.player.isPlaying;
     sliderMoved = YES;
     wait = NO;
-} 
+}
+
+-(int)thereAreConnectivityIssues
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL offlineOnly = [defaults boolForKey:@"offlineOnly"];
+    BOOL wifiOnly = [defaults boolForKey:@"wifiOnly"];
+    AMAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
+    BOOL wifiAvailable = appDelegate.wifi;
+    
+    int i = 0;
+    if (offlineOnly || (wifiOnly && !wifiAvailable)){
+        if (offlineOnly) i = 1;
+        else i = 2;
+    }
+        
+    return i;
+}
 
 - (IBAction)download:(UIBarButtonItem *)sender {
     NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
@@ -333,13 +357,9 @@
         
         if (barButtonItem.action == @selector(download:)) {
             if (barButtonItem.tag == 1) {
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                BOOL offlineOnly = [defaults boolForKey:@"offlineOnly"];
-                BOOL wifiOnly = [defaults boolForKey:@"wifiOnly"];
-                AMAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
-                BOOL wifiAvailable = appDelegate.wifi;
-                if (offlineOnly || (wifiOnly && !wifiAvailable)) {
-                    if (offlineOnly) {
+                int problem = [self thereAreConnectivityIssues];
+                if (problem) {
+                    if (problem == 1) {
                         [UIAlertView alertViewWithTitle:@"Sorry"
                                                 message:@"You are in Off-Line Only mode"
                                       cancelButtonTitle:@"OK"
@@ -369,6 +389,7 @@
                                                NSMutableDictionary *dict = [self.episode mutableCopy];
                                                [dict setObject:[[GetKeyStrings sharedKeyStrings]nameAtIndex:self.currentPodcast] forKey:@"name"];
                                                weakSelf.episode = [dict copy];
+                                               
                                                [[AMInitiateDownload sharedInitiator] downloadPodcast:self.episode];
                                                [toolbarItems replaceObjectAtIndex:i withObject:self.downloadButtonsArray[1]];
                                                [weakSelf.activityIndicator startAnimating];
@@ -404,11 +425,9 @@
     for (UIBarButtonItem *button in self.downloadButtonsArray) {
         if ([self.downloadButton isEqual:button]) {
             int index = [self.downloadButtonsArray indexOfObject:button];
-            if (index > 1) {
-                index = 0;
-            } else {
-                index++;
-            }
+            if (index > 1) index = 0;
+            else index++;
+            
             self.downloadButton = [self.downloadButtonsArray objectAtIndex:index];
         }
     }
@@ -423,9 +442,7 @@
     if ([arrayOfSavedNames count] > 0) {
         for (NSString *name in arrayOfSavedNames) {
             if ([name isEqualToString:podcastName]) {
-                if ([[[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName] objectForKey:self.episodeTitle.text]) {
-                    alreadyPresentInDictionary = YES;
-                }
+                if ([[[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName] objectForKey:self.episodeTitle.text]) alreadyPresentInDictionary = YES;
             }
         }
     }
@@ -438,18 +455,12 @@
     NSArray *arrayOfSavedNames = [[GetAndSaveData sharedGetAndSave]getAllNames];
     BOOL alreadyPresentInDictionary = NO;
     if ([arrayOfSavedNames count] > 0) {
-        for (NSString *name in arrayOfSavedNames) {
-            if ([name isEqualToString:podcastName]) {
-                alreadyPresentInDictionary = YES;
-            }
-        }
+        for (NSString *name in arrayOfSavedNames) if ([name isEqualToString:podcastName]) alreadyPresentInDictionary = YES;
     }
     NSMutableDictionary *dictionaryForTheCurrentPodcast;
-    if (alreadyPresentInDictionary) {
-        dictionaryForTheCurrentPodcast = [[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName];
-    } else {
-        dictionaryForTheCurrentPodcast = [[NSMutableDictionary alloc] init];
-    }
+    if (alreadyPresentInDictionary) dictionaryForTheCurrentPodcast = [[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName];
+    else dictionaryForTheCurrentPodcast = [[NSMutableDictionary alloc] init];
+    
     
     if (sender.tintColor == [UIColor yellowColor]) {
         sender.tintColor = [UIColor clearColor];
@@ -458,40 +469,52 @@
         sender.tintColor = [UIColor yellowColor];
         [dictionaryForTheCurrentPodcast setObject:self.episode forKey:self.episodeTitle.text];
     }
-    if ([dictionaryForTheCurrentPodcast count] > 0) {
-        [[GetAndSaveData sharedGetAndSave]setFavorites:dictionaryForTheCurrentPodcast ForName:podcastName];
-    } else {
-        [[GetAndSaveData sharedGetAndSave]deleteFavoritesForName:podcastName];
-    }
+    
+    if ([dictionaryForTheCurrentPodcast count] > 0) [[GetAndSaveData sharedGetAndSave]setFavorites:dictionaryForTheCurrentPodcast ForName:podcastName];
+    else [[GetAndSaveData sharedGetAndSave]deleteFavoritesForName:podcastName];
+    
 }
 
+-(BOOL)isPodcastLink:(NSString *)nameOfDownload
+{
+    NSString *podCastLink;
+    if ([[self.episode objectForKey:@"podcastLink"] length] > 5) podCastLink = [self.episode objectForKey:@"podcastLink"];
+    else podCastLink = [self.episode objectForKey:@"link"];
+    
+    return [nameOfDownload isEqualToString:podCastLink];
+}
 
 #pragma mark - AMInitiateDownload delegate methods
 
--(void)downloadingFailed
+-(void)downloadingFailed:(NSString *)nameOfDownload
 {
-    
-}
--(void)downloadReady:(NSString *)nameOfDownload
-{
-    NSString *podCastLink;
-    if ([[self.episode objectForKey:@"podcastLink"] length] > 5)
-    {
-        podCastLink = [self.episode objectForKey:@"podcastLink"];
-        
-    } else
-    {
-        podCastLink = [self.episode objectForKey:@"link"];
-    }
-    //NSLog(@"%@\n%@", nameOfDownload, podCastLink);
-    if ([nameOfDownload isEqualToString:podCastLink]) {
-        //NSLog(@"Equality met");
+    if ([self isPodcastLink:nameOfDownload]) {
         NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
         for (NSUInteger i = 0; i < [toolbarItems count]; i++) {
             UIBarButtonItem *barButtonItem = [toolbarItems objectAtIndex:i];
             
             if (barButtonItem.tag == 2) {
-                //NSLog(@"tag equals");
+                [toolbarItems replaceObjectAtIndex:i withObject:self.downloadButtonsArray[0]];
+                self.toolbar.items = toolbarItems;
+                [self.activityIndicator stopAnimating];
+            }
+        }
+        [UIAlertView alertViewWithTitle:@"OOPS"
+                                message:@"This download failed."
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:[NSArray arrayWithObjects:nil]
+                              onDismiss:^(int buttonIndex){}
+                               onCancel:^(){}];
+    }
+}
+-(void)downloadReady:(NSString *)nameOfDownload
+{
+    if ([self isPodcastLink:nameOfDownload]) {
+        NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
+        for (NSUInteger i = 0; i < [toolbarItems count]; i++) {
+            UIBarButtonItem *barButtonItem = [toolbarItems objectAtIndex:i];
+            
+            if (barButtonItem.tag == 2) {
                 [toolbarItems replaceObjectAtIndex:i withObject:self.downloadButtonsArray[2]];
                 self.toolbar.items = toolbarItems;
                 [self.activityIndicator stopAnimating];
@@ -560,7 +583,7 @@
 -(void)dealloc
 {
 #ifdef DEBUG
-	NSLog(@"dealloc %@", self);
+	//NSLog(@"dealloc %@", self);
 #endif
 }
 

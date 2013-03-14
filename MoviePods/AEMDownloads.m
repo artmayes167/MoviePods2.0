@@ -102,7 +102,6 @@ static AEMDownloads *sharedDownloads;
 -(NSString *)pathStarter
 {
     if (!_pathStarter) _pathStarter = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-    
     return _pathStarter;
 }
 

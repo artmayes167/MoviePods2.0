@@ -260,8 +260,6 @@
 		C1F7C37C16DD5AA0001D5672 = {
 			isa = PBXGroup;
 			children = (
-				C1B846BD16E187E600352BA4 /* AVFoundation.framework */,
-				C118EEA116DD8F3D000794A3 /* iAd.framework */,
 				C1F7C38E16DD5AA0001D5672 /* MoviePods */,
 				C1F7C38716DD5AA0001D5672 /* Frameworks */,
 				C1F7C38616DD5AA0001D5672 /* Products */,
@@ -279,6 +277,8 @@
 		C1F7C38716DD5AA0001D5672 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C1B846BD16E187E600352BA4 /* AVFoundation.framework */,
+				C118EEA116DD8F3D000794A3 /* iAd.framework */,
 				C118EE9F16DD879D000794A3 /* MobileCoreServices.framework */,
 				C118EE9D16DD8793000794A3 /* SystemConfiguration.framework */,
 				C1F7C38816DD5AA0001D5672 /* UIKit.framework */,

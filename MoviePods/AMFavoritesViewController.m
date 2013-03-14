@@ -33,9 +33,7 @@
             NSString *podcastName = [[GetKeyStrings sharedKeyStrings]nameAtIndex:self.podcastToLoad];
             if ([[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName]) {
                 NSMutableDictionary *dictionaryOfFavorites = [[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName];
-                for (NSMutableDictionary *dictionary in [dictionaryOfFavorites objectEnumerator]) {
-                    [allItemsArray addObject:dictionary];
-                }
+                for (NSMutableDictionary *dictionary in [dictionaryOfFavorites objectEnumerator]) [allItemsArray addObject:dictionary];
                 _currentItemArray = (NSArray *)allItemsArray;
             } else {
                 _currentItemArray = nil;
@@ -51,8 +49,8 @@
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
-    if (self) {
+    
+    if (self = [super initWithStyle:style]) {
         // Custom initialization
     }
     return self;

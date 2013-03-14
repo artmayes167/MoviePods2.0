@@ -30,18 +30,14 @@
     {
         if (self.view.tag < PODCAST_COUNT && [[GetAndSaveData sharedGetAndSave]arrayForParsedFeed:[[GetKeyStrings sharedKeyStrings]nameAtIndex:self.podcastToLoad]]) {
             _currentItemArray = [[GetAndSaveData sharedGetAndSave]arrayForParsedFeed:[[GetKeyStrings sharedKeyStrings]nameAtIndex:self.podcastToLoad]];
-        } else {
-            _currentItemArray = nil;
-        }
-        
+        } else  _currentItemArray = nil;
     }
     return _currentItemArray;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
-    if (self) {
+    if (self = [super initWithStyle:style]) {
         // Custom initialization
     }
     return self;

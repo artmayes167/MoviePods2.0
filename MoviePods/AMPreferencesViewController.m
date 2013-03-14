@@ -22,16 +22,13 @@
 #define OFFLINE_DEFAULTS_KEY @"offlineOnly"
 -(NSArray *)cellIdentifiers
 {
-    if (!_cellIdentifiers) {
-        _cellIdentifiers = @[@"WiFi", @"OffLine"];
-    }
+    if (!_cellIdentifiers) _cellIdentifiers = @[@"WiFi", @"OffLine"];
     return _cellIdentifiers;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
-    if (self) {
+    if (self = [super initWithStyle:style]) {
         // Custom initialization
     }
     return self;
@@ -46,7 +43,7 @@
 {
     [super viewDidAppear:animated];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSLog(@"default wifi = %u", [defaults boolForKey:WIFI_DEFAULTS_KEY]);
+    //NSLog(@"default wifi = %u", [defaults boolForKey:WIFI_DEFAULTS_KEY]);
     [self.wifiSwitch setOn:[defaults boolForKey:WIFI_DEFAULTS_KEY] animated:NO];
     [self.offlineSwitch setOn:[defaults boolForKey:OFFLINE_DEFAULTS_KEY] animated:NO];
 }
@@ -110,29 +107,20 @@
 }
 
 - (IBAction)wiFiOnly:(UISwitch *)sender {
-    NSLog(@"Switched wifi");
-    if (sender.on) {
-        if (self.offlineSwitch.on) {
-            [self.offlineSwitch setOn:NO animated:YES];
-        }
-    }
+    if (sender.on) if (self.offlineSwitch.on) [self.offlineSwitch setOn:NO animated:YES];
     [self updatePreferences];
 }
 
 - (IBAction)offLineMode:(UISwitch *)sender {
-    NSLog(@"Switched offline, value = %u", sender.on);
-    if (sender.on) {
-        if (self.wifiSwitch.on) {
-            [self.wifiSwitch setOn:NO animated:YES];
-        }
-    }
+    //NSLog(@"Switched offline, value = %u", sender.on);
+    if (sender.on) if (self.wifiSwitch.on) [self.wifiSwitch setOn:NO animated:YES];
     [self updatePreferences];
 }
 
 -(void)dealloc
 {
 #ifdef DEBUG
-	NSLog(@"dealloc %@", self);
+	//NSLog(@"dealloc %@", self);
 #endif
 }
 @end

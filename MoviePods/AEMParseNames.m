@@ -63,7 +63,8 @@
     wrongTitle = NO; // first title we come across in the document, we will use
 }
 
--(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
+-(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
+{
     currentElement = [elementName copy];
     
     if ([elementName isEqualToString:@"channel"]) {
@@ -76,7 +77,8 @@
      
 }
 
--(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
+-(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+{
     if (record) {
         if ([currentElement isEqualToString:@"title"]) {
             if (!wrongTitle) {
@@ -91,7 +93,8 @@
     }
 }
 
--(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
+-(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
+{
     if (record) {
         if ([currentElement isEqualToString:@"title"]) {
             if (!wrongTitle) [self.currentTitle appendString:string];
@@ -110,7 +113,7 @@
 -(void)dealloc
 {
 #ifdef DEBUG
-	NSLog(@"dealloc %@", self);
+	//NSLog(@"dealloc %@", self);
 #endif
 }
 

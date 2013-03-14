@@ -120,9 +120,7 @@ static GetAndSaveData *sharedGetAndSave;
 // But while operating, the app should freely move between Views, so the info is stored in active memory
 -(void)setParsedFeed:(NSArray *)feed forKey:(NSString *)key
 {
-    if (!allParsedFeeds) {
-        allParsedFeeds = [[NSMutableDictionary alloc] init];
-    }
+    if (!allParsedFeeds) allParsedFeeds = [[NSMutableDictionary alloc] init];
     [allParsedFeeds setObject:feed forKey:key];
 }
 -(NSArray *)arrayForParsedFeed:(NSString *)name

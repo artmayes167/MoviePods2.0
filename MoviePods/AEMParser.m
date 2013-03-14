@@ -125,7 +125,7 @@
 -(void)parserDidEndDocument:(NSXMLParser *)parser {
     if ([delegate respondsToSelector:@selector(receivedItems:forName:WithTag:)]){
         [delegate receivedItems:items forName:nameOfPodcast WithTag:self.tag];
-        //items = nil;
+        //if (self.tag == 4) NSLog(@"%@", items);
     }
     else
     {
@@ -137,7 +137,7 @@
 -(void)dealloc
 {
 #ifdef DEBUG
-	NSLog(@"dealloc %@", self);
+	//NSLog(@"dealloc %@", self);
 #endif
 }
 

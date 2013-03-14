@@ -38,6 +38,7 @@
             int cellIndex = [[self.initialQueue  objectAtIndex:i] intValue];
             [self setCellDisabledAtIndex:cellIndex];
         }
+        alreadyDownloaded = NO;
         [self queueItUp:self.initialQueue];
         didEnterForeground = NO;
     } else {
@@ -61,17 +62,13 @@
 }
 
 -(NSMutableArray *)failLog{
-    if (!_failLog) {
-        _failLog = [NSMutableArray new];
-    }
+    if (!_failLog) _failLog = [NSMutableArray new];
     return _failLog;
 }
 
 -(NSMutableArray *)requeueArray
 {
-    if (!_requeueArray) {
-        _requeueArray = [NSMutableArray new];
-    }
+    if (!_requeueArray) _requeueArray = [NSMutableArray new];
     return _requeueArray;
 }
 
@@ -121,12 +118,8 @@
                 }
             } else {
                 //NSLog(@"Reachable");
-                if (!offlineOnly) {
-                    [weakSelf queueItUp:weakSelf.initialQueue];
-                } else {
-                    [weakSelf makeThemAllVisible];
-                }
-                
+                if (!offlineOnly) [weakSelf queueItUp:weakSelf.initialQueue];
+                else [weakSelf makeThemAllVisible];
             }
             
         }
@@ -168,16 +161,14 @@
 
 -(void)makeThemAllVisible
 {
-    for (int i = 0; i < PODCAST_COUNT; ++i) {
-        [self setCellEnabledAtIndex:i];
-    }
+    for (int i = 0; i < PODCAST_COUNT; ++i) [self setCellEnabledAtIndex:i];
 }
 
 -(void)queueItUp:(NSMutableArray *)arrayForQueue
 {
     if (shouldBeQueueing) {
         if (!alreadyDownloaded && !currentlyQueueing) {
-            NSLog(@"Queueing items: %@", arrayForQueue);
+            //NSLog(@"Queueing items: %@", arrayForQueue);
             currentlyQueueing = YES;
             for (int i = 0; i < [arrayForQueue count]; ++i) {
                 int queueTag = [[arrayForQueue objectAtIndex:i] intValue];
@@ -213,9 +204,7 @@
      } failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
          [weakSelf.failLog addObject:@(operation.tag)];
-         if ([weakSelf.failLog count] + namesParsed == PODCAST_COUNT) {
-              [weakSelf sendAlerts];
-         }
+         if ([weakSelf.failLog count] + namesParsed == PODCAST_COUNT) [weakSelf sendAlerts];
          //[self sendAlert:[[operation request].URL absoluteString]];
          
      }];
@@ -279,9 +268,7 @@
     self.namesParsedArray[tag] = name;
     NSMutableArray *arrayToAlter = [self.requeueArray mutableCopy];
     for (id object in arrayToAlter) {
-        if ([object intValue] == tag) {
-            [self.requeueArray removeObjectIdenticalTo:@(tag)];
-        }
+        if ([object intValue] == tag) [self.requeueArray removeObjectIdenticalTo:@(tag)];
     }
     if (namesParsed == PODCAST_COUNT){
         [[GetAndSaveData sharedGetAndSave]setParsedNamesFeeds:(NSArray *)self.namesParsedArray];

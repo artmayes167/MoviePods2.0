@@ -440,7 +440,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 
 - (void)start {
     [self.lock lock];
-    NSLog(@"Called start");
+    //NSLog(@"Called start");
     if ([self isReady]) {
         self.state = AFOperationExecutingState;
 
@@ -468,7 +468,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 }
 
 - (void)finish {
-    NSLog(@"Finished");
+    //NSLog(@"Finished");
     self.state = AFOperationFinishedState;
 }
 

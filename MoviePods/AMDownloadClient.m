@@ -29,9 +29,9 @@
     }
     BOOL success = [self registerHTTPOperationClass:[AFHTTPRequestOperation class]];
     if (success) {
-        NSLog(@"Success");
+        //NSLog(@"Success");
     } else {
-        NSLog(@"Success");
+        //NSLog(@"Success");
     }
     return self;
 }

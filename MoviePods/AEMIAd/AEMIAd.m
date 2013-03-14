@@ -21,17 +21,8 @@ static AEMIAd *sharedAd = nil;
         
         // On iOS 6 ADBannerView introduces a new initializer, use it when available.
         
-        if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)])
-        {
-            
-            adView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
-            
-        } else
-        {
-            
-            adView = [[ADBannerView alloc] init];
-            
-        }
+        if ([ADBannerView instancesRespondToSelector:@selector(initWithAdType:)]) adView = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
+        else adView = [[ADBannerView alloc] init];
         
         CGRect screenBounds = [[UIScreen mainScreen] bounds];
         adView.frame = CGRectOffset(adView.frame, 0, screenBounds.size.height-50);
@@ -70,7 +61,6 @@ static AEMIAd *sharedAd = nil;
 +(AEMIAd *)sharedAd
 {
 	if (!sharedAd) sharedAd = [[self alloc] init];
-	
 	return sharedAd;
 }
 

@@ -34,26 +34,17 @@
             NSString *podcastName = [[GetKeyStrings sharedKeyStrings]nameAtIndex:self.podcastToLoad];
             if ([[AEMDownloads sharedDownloads]allEpisodesForKey:podcastName]) {
                 NSMutableDictionary *dictionaryOfFavorites = [[AEMDownloads sharedDownloads]allEpisodesForKey:podcastName];
-                for (NSMutableDictionary *dictionary in [dictionaryOfFavorites objectEnumerator]) {
-                    [allItemsArray addObject:dictionary];
-                }
+                for (NSMutableDictionary *dictionary in [dictionaryOfFavorites objectEnumerator]) [allItemsArray addObject:dictionary];
                 _currentItemArray = (NSArray *)allItemsArray;
-            } else {
-                _currentItemArray = nil;
-            }
-            
-        } else {
-            _currentItemArray = nil;
-        }
-        
+            } else _currentItemArray = nil;
+        } else _currentItemArray = nil;
     }
     return _currentItemArray;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
-    if (self) {
+    if (self = [super initWithStyle:style]) {
         // Custom initialization
     }
     return self;
@@ -63,7 +54,7 @@
 {
     [super viewDidLoad];
 
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, 90.0)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 90.0f)];
     headerView.backgroundColor = [UIColor blackColor];
     
     UIImage *podcasterImage = [UIImage imageNamed:[[GetKeyStrings sharedKeyStrings]imageNameAtIndex:self.podcastToLoad]];
@@ -114,7 +105,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     cell.textLabel.text = [self.currentItemArray[indexPath.row] objectForKey:@"title"];
-    cell.textLabel.font = [UIFont systemFontOfSize:12];
+    cell.textLabel.font = [UIFont systemFontOfSize:12.0f];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     cell.tag = indexPath.row;
     return cell;

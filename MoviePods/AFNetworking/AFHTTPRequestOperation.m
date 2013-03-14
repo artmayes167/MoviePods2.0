@@ -285,7 +285,7 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
             }
         } else {
             if (success) {
-                NSLog(@"Success");
+                //NSLog(@"Success");
                 dispatch_async(self.successCallbackQueue ?: dispatch_get_main_queue(), ^{
                     success(self, self.responseData);
                 });

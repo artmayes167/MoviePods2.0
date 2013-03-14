@@ -11,7 +11,7 @@
 @protocol AMIniateDownloadsDelegate <NSObject>
 
 @optional
--(void)downloadingFailed;
+-(void)downloadingFailed:(NSString *)nameOfDownload;
 -(void)downloadReady:(NSString *)nameOfDownload;
 
 @end
