@@ -15,6 +15,7 @@
 @interface AMRecentItemsViewController ()
 @property (nonatomic, strong) NSArray *currentItemArray;
 @property (nonatomic) int podcastToLoad;
+@property (nonatomic, strong) UILabel *headerLabel;
 @end
 
 @implementation AMRecentItemsViewController
@@ -74,7 +75,31 @@
     label.textColor = [UIColor whiteColor];
     label.text = self.podcastToLoad == 5 ? [podcastDictionary objectForKey:@"description"] : [podcastDictionary objectForKey:@"itunesSummary"];
     [headerView addSubview:label];
+    self.headerLabel = label;
     self.tableView.tableHeaderView = headerView;
+    
+    [self.refreshControl addTarget:self
+                            action:@selector(refresh)
+                  forControlEvents:UIControlEventValueChanged];
+}
+
+-(void)refresh
+{
+    NSDictionary *__block podcastDictionary;
+    [self.refreshControl beginRefreshing];
+    dispatch_queue_t q = dispatch_queue_create("table view loading queue", NULL);
+    dispatch_async(q, ^{
+        if ([[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds]) {
+            podcastDictionary = [[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds][self.podcastToLoad];
+        } else {
+            podcastDictionary = @{@"description" : @"Unavailable in offline mode", @"itunesSummary" : @"Unavailable in offline mode"};
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            self.headerLabel.text = self.podcastToLoad == 5 ? [podcastDictionary objectForKey:@"description"] : [podcastDictionary objectForKey:@"itunesSummary"];
+            [self.refreshControl endRefreshing];
+        });
+    });
 }
 
 

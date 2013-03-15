@@ -122,8 +122,11 @@ static AEMDownloads *sharedDownloads;
 }
 
 +(AEMDownloads *)sharedDownloads{
-	if (!sharedDownloads) sharedDownloads = [[self alloc] init];
-	
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedDownloads = [[self alloc] init];
+    });
 	return sharedDownloads;
 }
 

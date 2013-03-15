@@ -23,7 +23,7 @@ static GetAndSaveData *sharedGetAndSave;
     if (self = [super init])
     {
         NSError *error;
-        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); //1
         NSString *documentsDirectory = [paths objectAtIndex:0]; //2
         path = [documentsDirectory stringByAppendingPathComponent:@"data.plist"]; //3
@@ -138,7 +138,11 @@ static GetAndSaveData *sharedGetAndSave;
 
 +(GetAndSaveData *)sharedGetAndSave
 {
-	if (!sharedGetAndSave) sharedGetAndSave = [[self alloc] init];
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedGetAndSave = [[self alloc] init];
+    });
 	return sharedGetAndSave;
 }
 

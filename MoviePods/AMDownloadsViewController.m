@@ -42,14 +42,6 @@
     return _currentItemArray;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    if (self = [super initWithStyle:style]) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,10 +49,8 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 90.0f)];
     headerView.backgroundColor = [UIColor blackColor];
     
-    UIImage *podcasterImage = [UIImage imageNamed:[[GetKeyStrings sharedKeyStrings]imageNameAtIndex:self.podcastToLoad]];
-    
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 115.0f, 90.0f)];
-    imageView.image = podcasterImage;
+    imageView.image = [UIImage imageNamed:[[GetKeyStrings sharedKeyStrings]imageNameAtIndex:self.podcastToLoad]];
     [headerView addSubview:imageView];
     
     CGRect contentRect = headerView.bounds;

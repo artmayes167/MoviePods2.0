@@ -60,7 +60,10 @@ static AEMIAd *sharedAd = nil;
 
 +(AEMIAd *)sharedAd
 {
-	if (!sharedAd) sharedAd = [[self alloc] init];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedAd = [[self alloc] init];
+    });
 	return sharedAd;
 }
 

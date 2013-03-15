@@ -63,7 +63,9 @@ static AMInitiateDownload *sharedInitiator;
                  else podCastLink = [dictionary objectForKey:@"link"];
                  
                  if ([podCastLink isEqualToString:[[operation request].URL absoluteString]]) {
-                     [[AEMDownloads sharedDownloads]setEpisode:dictionary titled:[dictionary objectForKey:@"title"] forPodcast:[dictionary objectForKey:@"name"]];
+                     [[AEMDownloads sharedDownloads]setEpisode:dictionary
+                                                        titled:[dictionary objectForKey:@"title"]
+                                                    forPodcast:[dictionary objectForKey:@"name"]];
                      [weakSelf.downloadingDictionary removeObjectForKey:[dictionary objectForKey:@"title"]];
                      [[GetAndSaveData sharedGetAndSave]setDownloadsDictionary:self.downloadingDictionary];
                  }
@@ -82,7 +84,11 @@ static AMInitiateDownload *sharedInitiator;
 
 +(AMInitiateDownload *)sharedInitiator
 {
-    if (!sharedInitiator) sharedInitiator = [[self alloc] init];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInitiator = [[self alloc] init];
+
+    });
     return sharedInitiator;
 }
 

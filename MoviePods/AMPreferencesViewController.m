@@ -113,7 +113,7 @@
 
 - (IBAction)offLineMode:(UISwitch *)sender {
     //NSLog(@"Switched offline, value = %u", sender.on);
-    if (sender.on) if (self.wifiSwitch.on) [self.wifiSwitch setOn:NO animated:YES];
+    if (sender.on && self.wifiSwitch.on) [self.wifiSwitch setOn:NO animated:YES];
     [self updatePreferences];
 }
 

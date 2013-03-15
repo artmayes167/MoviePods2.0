@@ -17,7 +17,7 @@ static GetKeyStrings *sharedKeyStrings;
     if (self = [super init])
     {
         NSError *error;
-        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSFileManager *fileManager = [[NSFileManager alloc] init];
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); //1
         NSString *documentsDirectory = [paths objectAtIndex:0]; //2
         path = [documentsDirectory stringByAppendingPathComponent:@"Names.plist"]; //3
@@ -64,7 +64,10 @@ static GetKeyStrings *sharedKeyStrings;
 
 +(GetKeyStrings *)sharedKeyStrings
 {
-	if (!sharedKeyStrings) sharedKeyStrings = [[self alloc] init];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedKeyStrings = [[self alloc] init];
+    });        
 	return sharedKeyStrings;
 }
 
