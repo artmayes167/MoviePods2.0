@@ -12,7 +12,7 @@
 @interface AMAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic) int podcastToShow;
+@property (nonatomic) int podcastToShow, windowHeight;
 @property (nonatomic) BOOL enteringForeground;
 @property (nonatomic) BOOL wifi;
 @end

@@ -119,6 +119,8 @@
         
     } else if ([currentElement isEqualToString:@"itunes:summary"]){
         [self.itunesSummary appendString:string];
+    } else if ([currentElement isEqualToString:@"podcastLink"]) {
+        [self.currentPodcastLink appendString:string];
     }
 }
 

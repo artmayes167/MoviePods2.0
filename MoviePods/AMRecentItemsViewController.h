@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface AMRecentItemsViewController : UITableViewController
+@property (nonatomic) int windowHeight;
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C1009A3116F39AA2008296EB /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1009A3016F39AA1008296EB /* iPad.storyboard */; };
+		C1009A3416F3A598008296EB /* AMCustomHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C1009A3316F3A596008296EB /* AMCustomHeaderView.m */; };
 		C118EE9016DD873A000794A3 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C118EE7E16DD873A000794A3 /* AFHTTPClient.m */; };
 		C118EE9116DD873A000794A3 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C118EE8016DD873A000794A3 /* AFHTTPRequestOperation.m */; };
 		C118EE9216DD873A000794A3 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C118EE8216DD873A000794A3 /* AFImageRequestOperation.m */; };
@@ -46,12 +48,18 @@
 		C1E634F816E408FE00C5B077 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E634F716E408FE00C5B077 /* Default-568h@2x.png */; };
 		C1E634FA16E4090500C5B077 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E634F916E4090500C5B077 /* Default.png */; };
 		C1E634FC16E4090E00C5B077 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E634FB16E4090E00C5B077 /* Default@2x.png */; };
-		C1E634FE16E40BC400C5B077 /* MoviePodsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E634FD16E40BC400C5B077 /* MoviePodsIcon.png */; };
-		C1E6350216E40C0A00C5B077 /* MoviePodsIconRetina.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E634FF16E40C0A00C5B077 /* MoviePodsIconRetina.png */; };
-		C1E6350416E40C0A00C5B077 /* MoviePodsIconSmallRetina.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E6350116E40C0A00C5B077 /* MoviePodsIconSmallRetina.png */; };
-		C1E6350816E40C1500C5B077 /* MoviePodsIcon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E6350516E40C1500C5B077 /* MoviePodsIcon-Small-50.png */; };
-		C1E6350916E40C1500C5B077 /* MoviePodsIcon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E6350616E40C1500C5B077 /* MoviePodsIcon-Small.png */; };
-		C1E6350A16E40C1500C5B077 /* MoviePodsIcon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E6350716E40C1500C5B077 /* MoviePodsIcon-Small@2x.png */; };
+		C1E9AC7316F9117B00C7896B /* Icon-Small-29.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC6B16F9117A00C7896B /* Icon-Small-29.png */; };
+		C1E9AC7416F9117B00C7896B /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC6C16F9117A00C7896B /* Icon-Small-50.png */; };
+		C1E9AC7516F9117B00C7896B /* Icon-Small-58.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC6D16F9117A00C7896B /* Icon-Small-58.png */; };
+		C1E9AC7616F9117B00C7896B /* Icon-Small-100.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC6E16F9117B00C7896B /* Icon-Small-100.png */; };
+		C1E9AC7816F9122300C7896B /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC7716F9122300C7896B /* Icon-57.png */; };
+		C1E9AC7A16F9123200C7896B /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC7916F9123100C7896B /* Icon-114.png */; };
+		C1E9AC7C16F9124000C7896B /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC7B16F9124000C7896B /* Icon-72.png */; };
+		C1E9AC7E16F9124500C7896B /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC7D16F9124500C7896B /* Icon-144.png */; };
+		C1E9AC8016F9250600C7896B /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC7F16F9250600C7896B /* Default-Portrait@2x~ipad.png */; };
+		C1E9AC8216F9261D00C7896B /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC8116F9261D00C7896B /* Default-Portrait~ipad.png */; };
+		C1E9AC8416F9F28500C7896B /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC8316F9F28500C7896B /* Default-Landscape@2x~ipad.png */; };
+		C1E9AC8616F9F2D100C7896B /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E9AC8516F9F2D100C7896B /* Default-Landscape~ipad.png */; };
 		C1F7C38916DD5AA0001D5672 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F7C38816DD5AA0001D5672 /* UIKit.framework */; };
 		C1F7C38B16DD5AA0001D5672 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F7C38A16DD5AA0001D5672 /* Foundation.framework */; };
 		C1F7C38D16DD5AA0001D5672 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1F7C38C16DD5AA0001D5672 /* CoreGraphics.framework */; };
@@ -72,6 +80,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C1009A3016F39AA1008296EB /* iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = iPad.storyboard; path = ../iPad.storyboard; sourceTree = "<group>"; };
+		C1009A3216F3A595008296EB /* AMCustomHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMCustomHeaderView.h; sourceTree = "<group>"; };
+		C1009A3316F3A596008296EB /* AMCustomHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMCustomHeaderView.m; sourceTree = "<group>"; };
 		C118EE7D16DD873A000794A3 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		C118EE7E16DD873A000794A3 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		C118EE7F16DD873A000794A3 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -138,12 +149,18 @@
 		C1E634F716E408FE00C5B077 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		C1E634F916E4090500C5B077 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
 		C1E634FB16E4090E00C5B077 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
-		C1E634FD16E40BC400C5B077 /* MoviePodsIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoviePodsIcon.png; sourceTree = "<group>"; };
-		C1E634FF16E40C0A00C5B077 /* MoviePodsIconRetina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoviePodsIconRetina.png; sourceTree = "<group>"; };
-		C1E6350116E40C0A00C5B077 /* MoviePodsIconSmallRetina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoviePodsIconSmallRetina.png; sourceTree = "<group>"; };
-		C1E6350516E40C1500C5B077 /* MoviePodsIcon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoviePodsIcon-Small-50.png"; sourceTree = "<group>"; };
-		C1E6350616E40C1500C5B077 /* MoviePodsIcon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoviePodsIcon-Small.png"; sourceTree = "<group>"; };
-		C1E6350716E40C1500C5B077 /* MoviePodsIcon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MoviePodsIcon-Small@2x.png"; sourceTree = "<group>"; };
+		C1E9AC6B16F9117A00C7896B /* Icon-Small-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small-29.png"; path = "MoviePods/Icon-Small-29.png"; sourceTree = "<group>"; };
+		C1E9AC6C16F9117A00C7896B /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small-50.png"; path = "MoviePods/Icon-Small-50.png"; sourceTree = "<group>"; };
+		C1E9AC6D16F9117A00C7896B /* Icon-Small-58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small-58.png"; path = "MoviePods/Icon-Small-58.png"; sourceTree = "<group>"; };
+		C1E9AC6E16F9117B00C7896B /* Icon-Small-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small-100.png"; path = "MoviePods/Icon-Small-100.png"; sourceTree = "<group>"; };
+		C1E9AC7716F9122300C7896B /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-57.png"; sourceTree = "<group>"; };
+		C1E9AC7916F9123100C7896B /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
+		C1E9AC7B16F9124000C7896B /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		C1E9AC7D16F9124500C7896B /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-144.png"; sourceTree = "<group>"; };
+		C1E9AC7F16F9250600C7896B /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
+		C1E9AC8116F9261D00C7896B /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		C1E9AC8316F9F28500C7896B /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
+		C1E9AC8516F9F2D100C7896B /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		C1F7C38516DD5AA0001D5672 /* MoviePods.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoviePods.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1F7C38816DD5AA0001D5672 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C1F7C38A16DD5AA0001D5672 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -260,6 +277,18 @@
 		C1F7C37C16DD5AA0001D5672 = {
 			isa = PBXGroup;
 			children = (
+				C1E9AC8516F9F2D100C7896B /* Default-Landscape~ipad.png */,
+				C1E9AC8316F9F28500C7896B /* Default-Landscape@2x~ipad.png */,
+				C1E9AC8116F9261D00C7896B /* Default-Portrait~ipad.png */,
+				C1E9AC7F16F9250600C7896B /* Default-Portrait@2x~ipad.png */,
+				C1E9AC7D16F9124500C7896B /* Icon-144.png */,
+				C1E9AC7B16F9124000C7896B /* Icon-72.png */,
+				C1E9AC7916F9123100C7896B /* Icon-114.png */,
+				C1E9AC7716F9122300C7896B /* Icon-57.png */,
+				C1E9AC6B16F9117A00C7896B /* Icon-Small-29.png */,
+				C1E9AC6C16F9117A00C7896B /* Icon-Small-50.png */,
+				C1E9AC6D16F9117A00C7896B /* Icon-Small-58.png */,
+				C1E9AC6E16F9117B00C7896B /* Icon-Small-100.png */,
 				C1F7C38E16DD5AA0001D5672 /* MoviePods */,
 				C1F7C38716DD5AA0001D5672 /* Frameworks */,
 				C1F7C38616DD5AA0001D5672 /* Products */,
@@ -295,6 +324,7 @@
 				C1F7C3BC16DD64BD001D5672 /* Data Access */,
 				C1F7C39716DD5AA0001D5672 /* AMAppDelegate.h */,
 				C1F7C39816DD5AA0001D5672 /* AMAppDelegate.m */,
+				C1009A3016F39AA1008296EB /* iPad.storyboard */,
 				C1F7C3A016DD5AA0001D5672 /* MainStoryboard.storyboard */,
 				C1F7C38F16DD5AA0001D5672 /* Supporting Files */,
 				C1F7C3C316DD66C2001D5672 /* AMAllPodsCollectionViewController.h */,
@@ -313,6 +343,8 @@
 				C118EEBB16DE70D5000794A3 /* AMEpisodeViewController.m */,
 				C1E634F416E2908200C5B077 /* AMPreferencesViewController.h */,
 				C1E634F516E2908200C5B077 /* AMPreferencesViewController.m */,
+				C1009A3216F3A595008296EB /* AMCustomHeaderView.h */,
+				C1009A3316F3A596008296EB /* AMCustomHeaderView.m */,
 			);
 			path = MoviePods;
 			sourceTree = "<group>";
@@ -320,12 +352,6 @@
 		C1F7C38F16DD5AA0001D5672 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C1E6350516E40C1500C5B077 /* MoviePodsIcon-Small-50.png */,
-				C1E6350616E40C1500C5B077 /* MoviePodsIcon-Small.png */,
-				C1E6350716E40C1500C5B077 /* MoviePodsIcon-Small@2x.png */,
-				C1E634FF16E40C0A00C5B077 /* MoviePodsIconRetina.png */,
-				C1E6350116E40C0A00C5B077 /* MoviePodsIconSmallRetina.png */,
-				C1E634FD16E40BC400C5B077 /* MoviePodsIcon.png */,
 				C1E634FB16E4090E00C5B077 /* Default@2x.png */,
 				C1E634F916E4090500C5B077 /* Default.png */,
 				C1E634F716E408FE00C5B077 /* Default-568h@2x.png */,
@@ -433,12 +459,19 @@
 				C1E634F816E408FE00C5B077 /* Default-568h@2x.png in Resources */,
 				C1E634FA16E4090500C5B077 /* Default.png in Resources */,
 				C1E634FC16E4090E00C5B077 /* Default@2x.png in Resources */,
-				C1E634FE16E40BC400C5B077 /* MoviePodsIcon.png in Resources */,
-				C1E6350216E40C0A00C5B077 /* MoviePodsIconRetina.png in Resources */,
-				C1E6350416E40C0A00C5B077 /* MoviePodsIconSmallRetina.png in Resources */,
-				C1E6350816E40C1500C5B077 /* MoviePodsIcon-Small-50.png in Resources */,
-				C1E6350916E40C1500C5B077 /* MoviePodsIcon-Small.png in Resources */,
-				C1E6350A16E40C1500C5B077 /* MoviePodsIcon-Small@2x.png in Resources */,
+				C1009A3116F39AA2008296EB /* iPad.storyboard in Resources */,
+				C1E9AC7316F9117B00C7896B /* Icon-Small-29.png in Resources */,
+				C1E9AC7416F9117B00C7896B /* Icon-Small-50.png in Resources */,
+				C1E9AC7516F9117B00C7896B /* Icon-Small-58.png in Resources */,
+				C1E9AC7616F9117B00C7896B /* Icon-Small-100.png in Resources */,
+				C1E9AC7816F9122300C7896B /* Icon-57.png in Resources */,
+				C1E9AC7A16F9123200C7896B /* Icon-114.png in Resources */,
+				C1E9AC7C16F9124000C7896B /* Icon-72.png in Resources */,
+				C1E9AC7E16F9124500C7896B /* Icon-144.png in Resources */,
+				C1E9AC8016F9250600C7896B /* Default-Portrait@2x~ipad.png in Resources */,
+				C1E9AC8216F9261D00C7896B /* Default-Portrait~ipad.png in Resources */,
+				C1E9AC8416F9F28500C7896B /* Default-Landscape@2x~ipad.png in Resources */,
+				C1E9AC8616F9F2D100C7896B /* Default-Landscape~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,6 +512,7 @@
 				C1E634F016E27C5700C5B077 /* AMFavoritesViewController.m in Sources */,
 				C1E634F316E27C6800C5B077 /* AMDownloadsViewController.m in Sources */,
 				C1E634F616E2908200C5B077 /* AMPreferencesViewController.m in Sources */,
+				C1009A3416F3A598008296EB /* AMCustomHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,7 +600,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MoviePods/MoviePods-Prefix.pch";
 				INFOPLIST_FILE = "MoviePods/MoviePods-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -577,7 +613,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MoviePods/MoviePods-Prefix.pch";
 				INFOPLIST_FILE = "MoviePods/MoviePods-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -12,8 +12,11 @@
 #import "GetKeyStrings.h"
 #import "GetAndSaveData.h"
 #import "AEMDownloads.h"
+#import "AMCustomHeaderView.h"
 
-@interface AMDownloadsViewController ()
+@interface AMDownloadsViewController (){
+    AMCustomHeaderView *headerView;
+}
 @property (nonatomic, strong) NSArray *currentItemArray;
 @property (nonatomic) int podcastToLoad;
 @end
@@ -46,28 +49,11 @@
 {
     [super viewDidLoad];
 
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.bounds.size.width, 90.0f)];
-    headerView.backgroundColor = [UIColor blackColor];
-    
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 115.0f, 90.0f)];
-    imageView.image = [UIImage imageNamed:[[GetKeyStrings sharedKeyStrings]imageNameAtIndex:self.podcastToLoad]];
-    [headerView addSubview:imageView];
-    
-    CGRect contentRect = headerView.bounds;
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(120.0f, 0.0f, contentRect.size.width - 120.0f, contentRect.size.height)];
-    NSDictionary *podcastDictionary;
-    if ([[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds]) {
-        podcastDictionary = [[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds][self.podcastToLoad];
-    } else {
-        podcastDictionary = @{@"description" : @"Unavailable in offline mode", @"itunesSummary" : @"Unavailable in offline mode"};
-    }
-    label.lineBreakMode = NSLineBreakByWordWrapping;
-    label.numberOfLines = 0;
-    label.font = [UIFont fontWithName:@"Helvetica" size:9.0f];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.text = self.podcastToLoad == 5 ? [podcastDictionary objectForKey:@"description"] : [podcastDictionary objectForKey:@"itunesSummary"];
-    [headerView addSubview:label];
+    AMAppDelegate *delegate = [[UIApplication sharedApplication]delegate];
+    int height = delegate.windowHeight;
+    CGFloat width = self.tableView.bounds.size.width;
+    CGRect rectForHeaderView = CGRectMake(0.0f, 0.0f, width, height/6);
+    headerView = [[AMCustomHeaderView alloc] initWithFrame:rectForHeaderView];
     self.tableView.tableHeaderView = headerView;
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -95,7 +81,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     cell.textLabel.text = [self.currentItemArray[indexPath.row] objectForKey:@"title"];
-    cell.textLabel.font = [UIFont systemFontOfSize:12.0f];
+    AMAppDelegate *delegate = [[UIApplication sharedApplication]delegate];
+    int height = delegate.windowHeight;
+    if (height == 568 || height == 480) cell.textLabel.font = [UIFont systemFontOfSize:12.0f];
     cell.textLabel.adjustsFontSizeToFitWidth = YES;
     cell.tag = indexPath.row;
     return cell;

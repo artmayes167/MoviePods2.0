@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MoviePods/AMAllPodsCollectionViewController.m"
-         timestampString = "384783240.155509"
+         timestampString = "385148202.49326"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "242"
-         endingLineNumber = "242"
+         startingLineNumber = "241"
+         endingLineNumber = "241"
          landmarkName = "-sendAlerts"
          landmarkType = "5">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MoviePods/AMAllPodsCollectionViewController.m"
-         timestampString = "384783240.155509"
+         timestampString = "385148202.49326"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "238"
-         endingLineNumber = "238"
+         startingLineNumber = "237"
+         endingLineNumber = "237"
          landmarkName = "-sendAlerts"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,38 +34,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MoviePods/AMAllPodsCollectionViewController.m"
-         timestampString = "384785638.00371"
+         timestampString = "385148202.49326"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "257"
-         endingLineNumber = "257"
+         startingLineNumber = "256"
+         endingLineNumber = "256"
          landmarkName = "-parseName:withTag:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MoviePods/AMRecentItemsViewController.m"
-         timestampString = "384982664.399252"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "66"
-         endingLineNumber = "66"
-         landmarkName = "-viewDidLoad"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "MoviePods/AMRecentItemsViewController.m"
-         timestampString = "384982664.399252"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "71"
-         endingLineNumber = "71"
-         landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

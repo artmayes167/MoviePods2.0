@@ -24,7 +24,8 @@
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultPreferences];
     
     [AMInitiateDownload sharedInitiator].delegate = self;
-    
+    self.windowHeight = self.window.bounds.size.height;
+    NSLog(@"windowHeight = %i", self.windowHeight);
     return YES;
 }
 							

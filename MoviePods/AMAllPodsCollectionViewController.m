@@ -171,13 +171,14 @@
             //NSLog(@"Queueing items: %@", arrayForQueue);
             currentlyQueueing = YES;
             for (int i = 0; i < [arrayForQueue count]; ++i) {
-                int queueTag = [[arrayForQueue objectAtIndex:i] intValue];
-                [self setItemToDownload:[[GetKeyStrings sharedKeyStrings]nameAtIndex:queueTag] atAddress:[[GetKeyStrings sharedKeyStrings]addressAtIndex:queueTag] andIndex:queueTag];
+                    int queueTag = [[arrayForQueue objectAtIndex:i] intValue];
+                    [self setItemToDownload:[[GetKeyStrings sharedKeyStrings]nameAtIndex:queueTag] atAddress:[[GetKeyStrings sharedKeyStrings]addressAtIndex:queueTag] andIndex:queueTag];
             }
             
         }
     }
 }
+
 
 
 -(void)setItemToDownload:(NSString *)item atAddress:(NSString *)address andIndex:(int)index{
@@ -205,8 +206,6 @@
      {
          [weakSelf.failLog addObject:@(operation.tag)];
          if ([weakSelf.failLog count] + namesParsed == PODCAST_COUNT) [weakSelf sendAlerts];
-         //[self sendAlert:[[operation request].URL absoluteString]];
-         
      }];
     
     [operation start];
@@ -215,7 +214,7 @@
 -(void)sendAlerts{
     
     int keyVal = [[self.failLog lastObject] intValue];
-    NSString *alertString = [NSString stringWithFormat:@"%@ failed.  Try again?", [[GetKeyStrings sharedKeyStrings]addressAtIndex:keyVal]];
+    NSString *alertString = [NSString stringWithFormat:@"%@ failed.  Try again?", [[GetKeyStrings sharedKeyStrings]nameAtIndex:keyVal]];
     AMAllPodsCollectionViewController * __weak weakSelf = self;
     [UIAlertView alertViewWithTitle:@"Oops"
                             message:alertString

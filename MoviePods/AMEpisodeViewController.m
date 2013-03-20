@@ -84,6 +84,7 @@
         UIBarButtonItem *pauseButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(play:)];
         pauseButton.style = UIBarButtonItemStyleBordered;
         pauseButton.tag = 1;
+        pauseButton.tintColor = [UIColor redColor];
         _playButtonsArray = @[self.playButton, pauseButton];
     }
     return _playButtonsArray;
@@ -96,7 +97,7 @@
         NSData *data = [[AEMDownloads sharedDownloads]getDownloadForKey:[self.episode objectForKey:@"title"]];
         
         _player = [[AVAudioPlayer alloc] initWithData:data
-                                                    error:nil];
+                                                error:nil];
         _player.delegate = self;
         //self.amSlider.continuous = NO;
         self.amSlider.maximumValue = [_player duration]-1;
@@ -129,13 +130,14 @@
 
 -(void)fixThePodcastLink
 {
-    NSString *link = [self.episode objectForKey:@"podcastLink"];
-    //NSLog(@"%@", link);
+    NSString *burner = [self.episode objectForKey:@"podcastLink"];
+    NSString *link = burner.length > 5 ? [self.episode objectForKey:@"podcastLink"] : [self.episode objectForKey:@"link"];
+    
     if (link.length < 5) {
         NSString *tempString = [self.episode objectForKey:@"itunesSummary"] ? [self.episode objectForKey:@"itunesSummary"] : [self.episode objectForKey:@"summary"];
         NSString *summary = [tempString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSRange range = [summary rangeOfString:@"URL: "];
-        //NSLog(@"range = %i, object at range = %@", range.location, [summary substringFromIndex:range.location+5]);
+        
         NSMutableDictionary *tempEpisode = [self.episode mutableCopy];
         [tempEpisode setObject:[summary substringFromIndex:range.location+5] forKey:@"podcastLink"];
         self.episode = tempEpisode;
@@ -208,11 +210,6 @@
     if ([self.activityIndicator isAnimating]) [self.activityIndicator stopAnimating];
 }
 
--(void)viewDidDisappear:(BOOL)animated
-{
-    
-}
-
 
 - (IBAction)play:(id)sender 
 {
@@ -238,45 +235,9 @@
         isPlaying = self.player.isPlaying;
         wait = !isPlaying;
         
-    } else {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        BOOL offlineOnly = [defaults boolForKey:@"offlineOnly"];
-        BOOL wifiOnly = [defaults boolForKey:@"wifiOnly"];
-        AMAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
-        BOOL wifiAvailable = appDelegate.wifi;
-        if (offlineOnly || (wifiOnly && !wifiAvailable)) {
-            if (offlineOnly) {
-                [UIAlertView alertViewWithTitle:@"Sorry"
-                                        message:@"You are in Off-Line Only mode"
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:[NSArray arrayWithObjects:nil]
-                                      onDismiss:^(int buttonIndex){}
-                                       onCancel:^(){}];
-                //[alert show];
-            } else {
-                [UIAlertView alertViewWithTitle:@"Sorry"
-                                        message:@"Wi-Fi is Unavailable"
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:[NSArray arrayWithObjects:nil]
-                                      onDismiss:^(int buttonIndex){}
-                                       onCancel:^(){}];
-                //[alert show];
-            }
-            
-        } else {
-            NSURLRequest *request;
-            if ([[self.episode objectForKey:@"podcastLink"] length] > 5)
-            {
-                request = [[NSURLRequest alloc]
-                           initWithURL: [NSURL URLWithString: [self.episode objectForKey:@"podcastLink"]]];
-            } else
-            {
-                request = [[NSURLRequest alloc]
-                           initWithURL: [NSURL URLWithString: [self.episode objectForKey:@"link"]]];
-            }
-            
-            [self.episodeWebView loadRequest:request];
-        }
+    } else if (![self checkForIssues]){
+        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[self podCastLinkString]]];
+        [self.episodeWebView loadRequest:request];
         
     }
 }
@@ -350,6 +311,29 @@
     return i;
 }
 
+-(BOOL)checkForIssues{
+    int problem = [self thereAreConnectivityIssues];
+    if (problem) {
+        if (problem == 1) {
+            [UIAlertView alertViewWithTitle:@"Sorry"
+                                    message:@"You are in Off-Line Only mode"
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:[NSArray arrayWithObjects:nil]
+                                  onDismiss:^(int buttonIndex){}
+                                   onCancel:^(){}];
+        } else {
+            [UIAlertView alertViewWithTitle:@"Sorry"
+                                    message:@"Wi-Fi is Unavailable"
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:[NSArray arrayWithObjects:nil]
+                                  onDismiss:^(int buttonIndex){}
+                                   onCancel:^(){}];
+        }
+        return YES;
+    }
+    return NO;
+}
+
 - (IBAction)download:(UIBarButtonItem *)sender {
     NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
     for (NSUInteger i = 0; i < [toolbarItems count]; i++) {
@@ -357,27 +341,7 @@
         
         if (barButtonItem.action == @selector(download:)) {
             if (barButtonItem.tag == 1) {
-                int problem = [self thereAreConnectivityIssues];
-                if (problem) {
-                    if (problem == 1) {
-                        [UIAlertView alertViewWithTitle:@"Sorry"
-                                                message:@"You are in Off-Line Only mode"
-                                      cancelButtonTitle:@"OK"
-                                      otherButtonTitles:[NSArray arrayWithObjects:nil]
-                                              onDismiss:^(int buttonIndex){}
-                                               onCancel:^(){}];
-                        //[alert show];
-                    } else {
-                        [UIAlertView alertViewWithTitle:@"Sorry"
-                                                message:@"Wi-Fi is Unavailable"
-                                      cancelButtonTitle:@"OK"
-                                      otherButtonTitles:[NSArray arrayWithObjects:nil]
-                                              onDismiss:^(int buttonIndex){}
-                                               onCancel:^(){}];
-                        //[alert show];
-                    }
-                    
-                } else {
+                if (![self checkForIssues]) {
                     AMEpisodeViewController * __weak weakSelf = self; // prevents retain cycle in blocks
                     [UIAlertView alertViewWithTitle:@"Wait"
                                             message:@"Are you sure you want to download this podcast?"
@@ -395,7 +359,6 @@
                                                [weakSelf.activityIndicator startAnimating];
                                                weakSelf.toolbar.items = toolbarItems;
                                            }];
-                    //[alert show];
                 }
             
             } else {
@@ -415,19 +378,16 @@
                                                [weakSelf performSliderViewExitingAnimation];
                                            }
                                        }];
-                //[alert show];
             }
             break;
         }
     }
-    
     
     for (UIBarButtonItem *button in self.downloadButtonsArray) {
         if ([self.downloadButton isEqual:button]) {
             int index = [self.downloadButtonsArray indexOfObject:button];
             if (index > 1) index = 0;
             else index++;
-            
             self.downloadButton = [self.downloadButtonsArray objectAtIndex:index];
         }
     }
@@ -441,9 +401,7 @@
     BOOL alreadyPresentInDictionary = NO;
     if ([arrayOfSavedNames count] > 0) {
         for (NSString *name in arrayOfSavedNames) {
-            if ([name isEqualToString:podcastName]) {
-                if ([[[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName] objectForKey:self.episodeTitle.text]) alreadyPresentInDictionary = YES;
-            }
+            if ([name isEqualToString:podcastName] && [[[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName] objectForKey:self.episodeTitle.text]) alreadyPresentInDictionary = YES;
         }
     }
     return alreadyPresentInDictionary;
@@ -452,13 +410,8 @@
 - (IBAction)favorite:(UIBarButtonItem *)sender
 {
     NSString *podcastName = [[GetKeyStrings sharedKeyStrings]nameAtIndex:self.currentPodcast];
-    NSArray *arrayOfSavedNames = [[GetAndSaveData sharedGetAndSave]getAllNames];
-    BOOL alreadyPresentInDictionary = NO;
-    if ([arrayOfSavedNames count] > 0) {
-        for (NSString *name in arrayOfSavedNames) if ([name isEqualToString:podcastName]) alreadyPresentInDictionary = YES;
-    }
     NSMutableDictionary *dictionaryForTheCurrentPodcast;
-    if (alreadyPresentInDictionary) dictionaryForTheCurrentPodcast = [[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName];
+    if ([self isAFavorite]) dictionaryForTheCurrentPodcast = [[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName];
     else dictionaryForTheCurrentPodcast = [[NSMutableDictionary alloc] init];
     
     
@@ -477,11 +430,11 @@
 
 -(BOOL)isPodcastLink:(NSString *)nameOfDownload
 {
-    NSString *podCastLink;
-    if ([[self.episode objectForKey:@"podcastLink"] length] > 5) podCastLink = [self.episode objectForKey:@"podcastLink"];
-    else podCastLink = [self.episode objectForKey:@"link"];
-    
-    return [nameOfDownload isEqualToString:podCastLink];
+    return [nameOfDownload isEqualToString:[self podCastLinkString]];
+}
+-(NSString *)podCastLinkString
+{
+    return [[self.episode objectForKey:@"podcastLink"] length] > 5 ? [self.episode objectForKey:@"podcastLink"] : [self.episode objectForKey:@"link"];
 }
 
 #pragma mark - AMInitiateDownload delegate methods
@@ -528,10 +481,10 @@
 
 -(void)performSliderViewEnteringAnimation
 {
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGSize size;
-    if (screenScale == 2.0f) size = self.view.bounds.size;
-    else size = CGSizeMake(320.0, 372.0);
+    //CGFloat screenScale = [[UIScreen mainScreen] scale];
+    CGSize size = self.view.bounds.size;
+    //if (screenScale == 2.0f) size = self.view.bounds.size;
+    //else size = CGSizeMake(320.0, 372.0);
     
     CGPoint startPoint = CGPointMake(size.width / 2.0f, size.height + (self.sliderView.bounds.size.height/2) - self.toolbar.bounds.size.height);
     self.sliderView.center = startPoint;
@@ -544,11 +497,8 @@
     [UIView animateWithDuration:0.65f
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseOut
-                     animations:^
-     {
-         
+                     animations:^{
          weakSelf.sliderView.center = endPoint;
-         
      }
                      completion:nil];
     
@@ -557,10 +507,10 @@
 
 -(void)performSliderViewExitingAnimation
 {
-    CGFloat screenScale = [[UIScreen mainScreen] scale];
-    CGSize size;
-    if (screenScale == 2.0f) size = self.view.bounds.size;
-    else size = CGSizeMake(320.0, 372.0);
+    //CGFloat screenScale = [[UIScreen mainScreen] scale];
+    CGSize size = self.view.bounds.size;
+    //if (screenScale == 2.0f) size = self.view.bounds.size;
+    //else size = CGSizeMake(320.0, 372.0);
     
     CGPoint endPoint = CGPointMake(size.width / 2.0f, size.height + (self.sliderView.bounds.size.height/2) - self.toolbar.bounds.size.height);
     [self.episodeWebView setNeedsUpdateConstraints];
@@ -568,11 +518,8 @@
     [UIView animateWithDuration:0.65f
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseOut
-                     animations:^
-     {
-         
+                     animations:^{
          weakSelf.sliderView.center = endPoint;
-         
      }
                      completion:^(BOOL finished){
                          weakSelf.sliderView.hidden = YES;
