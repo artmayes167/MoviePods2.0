@@ -49,6 +49,7 @@ static GetAndSaveData *sharedGetAndSave;
 // These are stored in .plists, and are User-assigned
 -(NSMutableDictionary *)favoritesDictionaryForName:(NSString *)podcastName
 {
+    NSLog(@"allItems for key = %@", [allItems objectForKey:podcastName]);
     return [allItems objectForKey:podcastName];
 }
 
@@ -88,7 +89,7 @@ static GetAndSaveData *sharedGetAndSave;
                  forKey:podcastName];
     [allItems writeToFile:path
                atomically:YES];
-    
+    NSLog(@"Setting allItems: %@", dictionaryOfFavoritedEpisodes);
     if(![allItems writeToFile:path atomically:YES]){}
 }
 -(void)deleteFavoritesForName:(NSString *)podcastName{

@@ -89,7 +89,7 @@
             [item setObject:self.currentSummary forKey:@"description"];
         } else if ([currentElement isEqualToString:@"itunes:summary"]) {
             if (self.itunesSummary.length > 5) [item setObject:self.itunesSummary forKey:@"itunesSummary"];
-        }
+        } 
     }
 }
 

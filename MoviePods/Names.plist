@@ -10,6 +10,8 @@
 		<string>http://filmjive.wordpress.com/tag/film-jive/</string>
 		<string>http://www.rowthree.com/mamo-archive/</string>
 		<string>http://www.filmjunk.com/</string>
+		<string>http://movieclubpodcast.blogspot.com/</string>
+		<string>http://wherethelongtailends.com/</string>
 	</array>
 	<key>Images</key>
 	<array>
@@ -19,6 +21,8 @@
 		<string>FilmJive.jpg</string>
 		<string>mamo.jpg</string>
 		<string>fj-logo-nav.gif</string>
+		<string>TheMovieClubPodcast.jpg</string>
+		<string>WTLTELogo.jpg</string>
 	</array>
 	<key>Addresses</key>
 	<array>
@@ -28,6 +32,8 @@
 		<string>http://feeds.feedburner.com/FilmJive?format=xml</string>
 		<string>http://www.rowthree.com/category/mamo!/feed/</string>
 		<string>http://feeds.feedburner.com/filmjunk</string>
+		<string>http://feeds.feedburner.com/TheMovieClubPodcast?format=xml</string>
+		<string>http://feeds.feedblitz.com/wherethelongtailends&amp;x=1</string>
 	</array>
 	<key>Favorites</key>
 	<array>
@@ -37,6 +43,8 @@
 		<string>FilmJiveFavorites</string>
 		<string>MamoFavorites</string>
 		<string>FilmJunkFavorites</string>
+		<string>MovieClubFavorites</string>
+		<string>WTLTEFavorites</string>
 	</array>
 	<key>Podcast</key>
 	<array>
@@ -46,6 +54,8 @@
 		<string>Film Jive</string>
 		<string>Mamo!</string>
 		<string>Film Junk</string>
+		<string>The Movie Club</string>
+		<string>Where The Long Tail Ends</string>
 	</array>
 </dict>
 </plist>

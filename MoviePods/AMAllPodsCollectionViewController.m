@@ -339,14 +339,27 @@
 {
     AMCustomCollectionViewCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:@"Icon" forIndexPath:indexPath];
     cell.imageView.image = [UIImage imageNamed:[[GetKeyStrings sharedKeyStrings]imageNameAtIndex:indexPath.item]];
-    cell.imageView.alpha = 0.5;
+    BOOL downloaded = NO;
+    if ([[GetAndSaveData sharedGetAndSave] arrayForParsedFeed:[[GetKeyStrings sharedKeyStrings] nameAtIndex:indexPath.item]]) downloaded = YES;
+    if (!downloaded) {
+        cell.imageView.alpha = 0.5;
+        cell.userInteractionEnabled = NO;
+    } else {
+        cell.imageView.alpha = 1.0;
+        cell.userInteractionEnabled = YES;
+    }
+    
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(cell.frame.size.width/2 - 15.0, cell.frame.size.height/2 - 15.0, 30.0, 30.0)];
     indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     indicator.hidesWhenStopped = YES;
-    [indicator startAnimating];
-    cell.activityIndicator = indicator;
-    [cell.imageView addSubview:cell.activityIndicator];
-    cell.userInteractionEnabled = NO;
+    
+    if (!cell.activityIndicator) {
+        if (!downloaded) [indicator startAnimating];
+        cell.activityIndicator = indicator;
+        [cell.imageView addSubview:cell.activityIndicator];
+    } else if (downloaded)[cell.activityIndicator stopAnimating];
+    else [cell.activityIndicator startAnimating];
+    
     if (indexPath.item == 1) {
         cell.label.text = @"Cinecast";
         //cell.label.textColor = [UIColor whiteColor];
@@ -356,6 +369,9 @@
         cell.label.text = @"The Matinee";
         [cell.label sizeToFit];
         
+    }
+    if (indexPath.item != 1 && indexPath.item != 2) {
+        cell.label.text = @"";
     }
     // indexPath contains .item and .section
     return cell;

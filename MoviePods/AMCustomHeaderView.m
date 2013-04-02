@@ -54,7 +54,7 @@
  label.font = self.height == 1024/6 ? [UIFont fontWithName:@"Helvetica" size:17.0f] : [UIFont fontWithName:@"Helvetica" size:9.0f];
  label.backgroundColor = [UIColor clearColor];
  label.textColor = [UIColor whiteColor];
- label.text = self.podcastToLoad == 5 ? [podcastDictionary objectForKey:@"description"] : [podcastDictionary objectForKey:@"itunesSummary"];
+ label.text = self.podcastToLoad == 5 || self.podcastToLoad == 6 ? [podcastDictionary objectForKey:@"description"] : [podcastDictionary objectForKey:@"itunesSummary"];
     self.myLabel = label;
  [headerView addSubview:label];
     [self addSubview:headerView];

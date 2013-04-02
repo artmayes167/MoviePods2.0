@@ -404,6 +404,7 @@
             if ([name isEqualToString:podcastName] && [[[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName] objectForKey:self.episodeTitle.text]) alreadyPresentInDictionary = YES;
         }
     }
+    NSLog(@"alreadypresent = %c", alreadyPresentInDictionary);
     return alreadyPresentInDictionary;
 }
 
@@ -411,10 +412,10 @@
 {
     NSString *podcastName = [[GetKeyStrings sharedKeyStrings]nameAtIndex:self.currentPodcast];
     NSMutableDictionary *dictionaryForTheCurrentPodcast;
-    if ([self isAFavorite]) dictionaryForTheCurrentPodcast = [[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName];
+    if ([[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName]) dictionaryForTheCurrentPodcast = [[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName];
     else dictionaryForTheCurrentPodcast = [[NSMutableDictionary alloc] init];
     
-    
+    NSLog(@"count before = %i", [dictionaryForTheCurrentPodcast count]);
     if (sender.tintColor == [UIColor yellowColor]) {
         sender.tintColor = [UIColor clearColor];
         [dictionaryForTheCurrentPodcast removeObjectForKey:self.episodeTitle.text];
@@ -422,6 +423,7 @@
         sender.tintColor = [UIColor yellowColor];
         [dictionaryForTheCurrentPodcast setObject:self.episode forKey:self.episodeTitle.text];
     }
+    NSLog(@"count after = %i", [dictionaryForTheCurrentPodcast count]);
     
     if ([dictionaryForTheCurrentPodcast count] > 0) [[GetAndSaveData sharedGetAndSave]setFavorites:dictionaryForTheCurrentPodcast ForName:podcastName];
     else [[GetAndSaveData sharedGetAndSave]deleteFavoritesForName:podcastName];
@@ -481,10 +483,7 @@
 
 -(void)performSliderViewEnteringAnimation
 {
-    //CGFloat screenScale = [[UIScreen mainScreen] scale];
     CGSize size = self.view.bounds.size;
-    //if (screenScale == 2.0f) size = self.view.bounds.size;
-    //else size = CGSizeMake(320.0, 372.0);
     
     CGPoint startPoint = CGPointMake(size.width / 2.0f, size.height + (self.sliderView.bounds.size.height/2) - self.toolbar.bounds.size.height);
     self.sliderView.center = startPoint;
@@ -507,10 +506,7 @@
 
 -(void)performSliderViewExitingAnimation
 {
-    //CGFloat screenScale = [[UIScreen mainScreen] scale];
     CGSize size = self.view.bounds.size;
-    //if (screenScale == 2.0f) size = self.view.bounds.size;
-    //else size = CGSizeMake(320.0, 372.0);
     
     CGPoint endPoint = CGPointMake(size.width / 2.0f, size.height + (self.sliderView.bounds.size.height/2) - self.toolbar.bounds.size.height);
     [self.episodeWebView setNeedsUpdateConstraints];

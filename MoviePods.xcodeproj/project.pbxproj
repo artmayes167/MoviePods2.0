@@ -40,6 +40,8 @@
 		C118EED516DFE8E7000794A3 /* UIAlertView+MKBlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C118EED216DFE8E7000794A3 /* UIAlertView+MKBlockAdditions.m */; };
 		C118EED716E00A08000794A3 /* defaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = C118EED616E00A08000794A3 /* defaultPreferences.plist */; };
 		C1B846BE16E187E600352BA4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1B846BD16E187E600352BA4 /* AVFoundation.framework */; };
+		C1CDAAF2170B83C300C26E07 /* TheMovieClubPodcast.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C1CDAAF1170B83C300C26E07 /* TheMovieClubPodcast.jpg */; };
+		C1CDAAF4170B94AD00C26E07 /* WTLTELogo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C1CDAAF3170B94AD00C26E07 /* WTLTELogo.jpg */; };
 		C1E634EB16E2643F00C5B077 /* sliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E634EA16E2643F00C5B077 /* sliderThumb.png */; };
 		C1E634ED16E2689600C5B077 /* sliderButtonMoving.png in Resources */ = {isa = PBXBuildFile; fileRef = C1E634EC16E2689600C5B077 /* sliderButtonMoving.png */; };
 		C1E634F016E27C5700C5B077 /* AMFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C1E634EF16E27C5700C5B077 /* AMFavoritesViewController.m */; };
@@ -138,6 +140,8 @@
 		C118EED216DFE8E7000794A3 /* UIAlertView+MKBlockAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+MKBlockAdditions.m"; sourceTree = "<group>"; };
 		C118EED616E00A08000794A3 /* defaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultPreferences.plist; sourceTree = "<group>"; };
 		C1B846BD16E187E600352BA4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		C1CDAAF1170B83C300C26E07 /* TheMovieClubPodcast.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = TheMovieClubPodcast.jpg; sourceTree = "<group>"; };
+		C1CDAAF3170B94AD00C26E07 /* WTLTELogo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = WTLTELogo.jpg; sourceTree = "<group>"; };
 		C1E634EA16E2643F00C5B077 /* sliderThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sliderThumb.png; sourceTree = "<group>"; };
 		C1E634EC16E2689600C5B077 /* sliderButtonMoving.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sliderButtonMoving.png; sourceTree = "<group>"; };
 		C1E634EE16E27C5700C5B077 /* AMFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMFavoritesViewController.h; sourceTree = "<group>"; };
@@ -352,6 +356,8 @@
 		C1F7C38F16DD5AA0001D5672 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C1CDAAF3170B94AD00C26E07 /* WTLTELogo.jpg */,
+				C1CDAAF1170B83C300C26E07 /* TheMovieClubPodcast.jpg */,
 				C1E634FB16E4090E00C5B077 /* Default@2x.png */,
 				C1E634F916E4090500C5B077 /* Default.png */,
 				C1E634F716E408FE00C5B077 /* Default-568h@2x.png */,
@@ -472,6 +478,8 @@
 				C1E9AC8216F9261D00C7896B /* Default-Portrait~ipad.png in Resources */,
 				C1E9AC8416F9F28500C7896B /* Default-Landscape@2x~ipad.png in Resources */,
 				C1E9AC8616F9F2D100C7896B /* Default-Landscape~ipad.png in Resources */,
+				C1CDAAF2170B83C300C26E07 /* TheMovieClubPodcast.jpg in Resources */,
+				C1CDAAF4170B94AD00C26E07 /* WTLTELogo.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

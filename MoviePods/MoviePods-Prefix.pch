@@ -14,5 +14,5 @@
     #import <SystemConfiguration/SystemConfiguration.h>
     #import <MobileCoreServices/MobileCoreServices.h>
 
-#define PODCAST_COUNT 6
+#define PODCAST_COUNT 8
 #endif
