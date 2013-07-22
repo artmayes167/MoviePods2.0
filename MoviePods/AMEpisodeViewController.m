@@ -240,6 +240,7 @@
         
     } else if (![self checkForIssues]){
         NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[self podCastLinkString]]];
+        //NSLog(@"link = %@", [self podCastLinkString]);
         [self.episodeWebView loadRequest:request];
         
     }
