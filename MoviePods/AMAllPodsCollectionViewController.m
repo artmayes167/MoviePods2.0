@@ -162,6 +162,7 @@
 -(void)makeThemAllVisible
 {
     for (int i = 0; i < PODCAST_COUNT; ++i) [self setCellEnabledAtIndex:i];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 -(void)queueItUp:(NSMutableArray *)arrayForQueue
@@ -170,6 +171,7 @@
         if (!alreadyDownloaded && !currentlyQueueing) {
             //NSLog(@"Queueing items: %@", arrayForQueue);
             currentlyQueueing = YES;
+            [[UIApplication sharedApplication]setNetworkActivityIndicatorVisible:YES];
             for (int i = 0; i < [arrayForQueue count]; ++i) {
                     int queueTag = [[arrayForQueue objectAtIndex:i] intValue];
                     [self setItemToDownload:[[GetKeyStrings sharedKeyStrings]nameAtIndex:queueTag] atAddress:[[GetKeyStrings sharedKeyStrings]addressAtIndex:queueTag] andIndex:queueTag];
@@ -275,6 +277,7 @@
         shouldBeQueueing = NO;
         currentlyQueueing = NO;
         [self.refreshButton setEnabled:NO];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }
 }
 

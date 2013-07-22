@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MoviePods/AMAllPodsCollectionViewController.m"
-         timestampString = "385148202.49326"
+         timestampString = "387118021.272573"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "241"
-         endingLineNumber = "241"
+         startingLineNumber = "243"
+         endingLineNumber = "243"
          landmarkName = "-sendAlerts"
          landmarkType = "5">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MoviePods/AMAllPodsCollectionViewController.m"
-         timestampString = "385148202.49326"
+         timestampString = "387118021.272573"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "237"
-         endingLineNumber = "237"
+         startingLineNumber = "239"
+         endingLineNumber = "239"
          landmarkName = "-sendAlerts"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "MoviePods/AMAllPodsCollectionViewController.m"
-         timestampString = "385148202.49326"
+         timestampString = "387118021.272573"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "256"
-         endingLineNumber = "256"
+         startingLineNumber = "258"
+         endingLineNumber = "258"
          landmarkName = "-parseName:withTag:"
          landmarkType = "5">
       </FileBreakpoint>

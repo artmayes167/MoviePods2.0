@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSMutableString *currentLink;
 @property (strong, nonatomic) NSMutableString *currentPodcastLink;
 @property (strong, nonatomic) NSMutableString *itunesSummary;
+@property (strong, nonatomic) NSMutableString *linkForLongTail;
 @end
 
 @implementation AEMParser
@@ -31,7 +32,7 @@
 @synthesize currentLink;
 @synthesize currentPodcastLink;
 @synthesize itunesSummary;
-
+@synthesize linkForLongTail;
 
 //parse feeds that have already been saved in temporary data
 -(void)parseFeed:(NSData *)feed withName:(NSString *)name andDelegate:(id)aDelegate{
@@ -65,6 +66,7 @@
         self.currentLink = [[NSMutableString alloc] init];
         self.currentPodcastLink = [[NSMutableString alloc] init];
         self.itunesSummary = [[NSMutableString alloc] init];
+        self.linkForLongTail = [[NSMutableString alloc] init];
     }
     
     // podcast url is an attribute of the element enclosure
@@ -78,6 +80,10 @@
         [item setObject:[self.currentLink stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:@"link"];
         [item setObject:self.currentSummary forKey:@"summary"];
         [item setObject:self.currentPodcastLink forKey:@"podcastLink"];
+        if (self.linkForLongTail) {
+            [item setObject:self.linkForLongTail forKey:@"linkForLongTail"];
+        }
+        
         
         if (self.itunesSummary.length > 5) [item setObject:self.itunesSummary forKey:@"itunesSummary"];
         
@@ -121,6 +127,8 @@
         [self.itunesSummary appendString:string];
     } else if ([currentElement isEqualToString:@"podcastLink"]) {
         [self.currentPodcastLink appendString:string];
+    } else if ([currentElement isEqualToString:@"feedburner:origEnclosureLink"]){
+        [self.linkForLongTail appendString:string];
     }
 }
 

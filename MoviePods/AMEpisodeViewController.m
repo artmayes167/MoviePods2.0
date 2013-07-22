@@ -142,6 +142,12 @@
         [tempEpisode setObject:[summary substringFromIndex:range.location+5] forKey:@"podcastLink"];
         self.episode = tempEpisode;
     }
+    if (self.currentPodcast == 7){
+        NSLog(@"Setting for 7");
+        NSMutableDictionary *tempEpisode = [self.episode mutableCopy];
+        [tempEpisode setObject:[self.episode objectForKey:@"linkForLongTail"] forKey:@"podcastLink"];
+        self.episode = tempEpisode;
+    }
 }
 
 #pragma mark - View Life Cycle
@@ -180,7 +186,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if (self.currentPodcast == 4) [self fixThePodcastLink]; // mamo puts the link in their summary
+    if (self.currentPodcast == 4 || self.currentPodcast == 7) [self fixThePodcastLink]; // mamo puts the link in their summary
     
     self.episodeTitle.text = [self.episode objectForKey:@"title"];
     if ([self.episode objectForKey:@"date"]) {
@@ -237,6 +243,7 @@
         
     } else if (![self checkForIssues]){
         NSURLRequest *request = [[NSURLRequest alloc]initWithURL:[NSURL URLWithString:[self podCastLinkString]]];
+        //NSLog(@"link = %@", [self podCastLinkString]);
         [self.episodeWebView loadRequest:request];
         
     }
@@ -404,7 +411,7 @@
             if ([name isEqualToString:podcastName] && [[[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName] objectForKey:self.episodeTitle.text]) alreadyPresentInDictionary = YES;
         }
     }
-    NSLog(@"alreadypresent = %c", alreadyPresentInDictionary);
+    //NSLog(@"alreadypresent = %c", alreadyPresentInDictionary);
     return alreadyPresentInDictionary;
 }
 
