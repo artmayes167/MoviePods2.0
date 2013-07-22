@@ -10,9 +10,16 @@
 
 static GetKeyStrings *sharedKeyStrings;
 
+@interface GetKeyStrings () {
+    NSDictionary *allKeyStringsDictionary;
+    NSString *path;
+}
+
+@end
+
 @implementation GetKeyStrings
 
--(id)init
+- (id)init
 {
     if (self = [super init])
     {
@@ -36,28 +43,33 @@ static GetKeyStrings *sharedKeyStrings;
     return self;
 }
 
--(NSString *)nameAtIndex:(int)index
+- (NSString *)nameAtIndex:(int)index
 {
     return [[allKeyStringsDictionary objectForKey:@"Podcast"] objectAtIndex:index];
     
 }
--(NSString *)favoriteNameAtIndex:(int)index
+
+- (NSString *)favoriteNameAtIndex:(int)index
 {
     return [[allKeyStringsDictionary objectForKey:@"Favorites"] objectAtIndex:index];
 }
--(NSString *)addressAtIndex:(int)index
+
+- (NSString *)addressAtIndex:(int)index
 {
     return [[allKeyStringsDictionary objectForKey:@"Addresses"] objectAtIndex:index];
 }
--(int)indexOfAddress:(NSString *)address
+
+- (int)indexOfAddress:(NSString *)address
 {
     return [[allKeyStringsDictionary objectForKey:@"Addresses"] indexOfObject:address];
 }
--(NSString *)imageNameAtIndex:(int)index
+
+- (NSString *)imageNameAtIndex:(int)index
 {
     return [[allKeyStringsDictionary objectForKey:@"Images"] objectAtIndex:index];
 }
--(NSString *)siteAtIndex:(int)index
+
+- (NSString *)siteAtIndex:(int)index
 {
     return [[allKeyStringsDictionary objectForKey:@"Sites"] objectAtIndex:index];
 }

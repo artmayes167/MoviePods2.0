@@ -17,6 +17,19 @@
 
 @implementation AMAppDelegate
 
++ (AMAppDelegate *)sharedAppDelegate
+{
+    static AMAppDelegate *sharedSingleton;
+    
+    @synchronized(self)
+    {
+        if (!sharedSingleton)
+            sharedSingleton = (AMAppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        return sharedSingleton;
+    }
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSString *defaultPrefsFile = [[NSBundle mainBundle] pathForResource:@"defaultPreferences" ofType:@"plist"];
@@ -25,7 +38,6 @@
     
     [AMInitiateDownload sharedInitiator].delegate = self;
     self.windowHeight = self.window.bounds.size.height;
-    //NSLog(@"windowHeight = %i", self.windowHeight);
     return YES;
 }
 							

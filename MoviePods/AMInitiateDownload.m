@@ -18,7 +18,7 @@ static AMInitiateDownload *sharedInitiator;
 
 @implementation AMInitiateDownload
 
--(NSMutableDictionary *)downloadingDictionary
+- (NSMutableDictionary *)downloadingDictionary
 {
     if (!_downloadingDictionary) {
         if ([[GetAndSaveData sharedGetAndSave]dictionaryOfDownloads]) _downloadingDictionary = [[GetAndSaveData sharedGetAndSave]dictionaryOfDownloads];
@@ -27,7 +27,7 @@ static AMInitiateDownload *sharedInitiator;
     return _downloadingDictionary;
 }
 
--(void)downloadPodcast:(NSDictionary *)dict //toPath:(NSString *)path
+- (void)downloadPodcast:(NSDictionary *)dict //toPath:(NSString *)path
 {
     // store the dictionary
     [self.downloadingDictionary setObject:dict forKey:[dict objectForKey:@"title"]];
@@ -36,7 +36,6 @@ static AMInitiateDownload *sharedInitiator;
     NSString *podCastLink;
     if ([[dict objectForKey:@"podcastLink"] length] > 5) podCastLink = [dict objectForKey:@"podcastLink"];
     else podCastLink = [dict objectForKey:@"link"];
-    //NSLog(@"podcastLink = %@, link = %@", [dict objectForKey:@"podcastLink"], [dict objectForKey:@"link"]);
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:podCastLink]
                                              cachePolicy:NSURLRequestReturnCacheDataElseLoad
@@ -69,9 +68,6 @@ static AMInitiateDownload *sharedInitiator;
                      [weakSelf.downloadingDictionary removeObjectForKey:[dictionary objectForKey:@"title"]];
                      [[GetAndSaveData sharedGetAndSave]setDownloadsDictionary:self.downloadingDictionary];
                  }
-             } else {
-                 //NSLog(@"%@", [self.downloadingDictionary allKeys]);
-                 
              }
          }
      } failure:^(AFHTTPRequestOperation *operation, NSError *error)
@@ -82,7 +78,7 @@ static AMInitiateDownload *sharedInitiator;
     [[AMDownloadClient sharedDownloadClient] enqueueHTTPRequestOperation:operation];    
 }
 
-+(AMInitiateDownload *)sharedInitiator
++ (AMInitiateDownload *)sharedInitiator
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

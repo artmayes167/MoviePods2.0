@@ -10,13 +10,20 @@
 
 static AEMIAd *sharedAd = nil;
 
+@interface AEMIAd () {
+    ADBannerView *adView;
+    BOOL bannerIsVisible;
+}
+
+@end
+
 @implementation AEMIAd
 
 @synthesize adView;
 
--(id)init
+- (id)init
 {
-    if (self)
+    if (self = [super init])
     {
         
         // On iOS 6 ADBannerView introduces a new initializer, use it when available.
@@ -40,18 +47,18 @@ static AEMIAd *sharedAd = nil;
 
 
 
--(void) attachAdToView:(UIView *)view
+- (void) attachAdToView:(UIView *)view
 {
     if (bannerIsVisible) [view addSubview:self.adView];
 }
 
--(void)bannerViewDidLoadAd:(ADBannerView *)banner
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner
 {
     [self.adView setHidden:NO];
     bannerIsVisible = YES;
 }
 
--(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
 {
     [self.adView setHidden:YES];
     bannerIsVisible = NO;

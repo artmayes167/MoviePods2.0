@@ -11,8 +11,8 @@
 @protocol AMIniateDownloadsDelegate <NSObject>
 
 @optional
--(void)downloadingFailed:(NSString *)nameOfDownload;
--(void)downloadReady:(NSString *)nameOfDownload;
+- (void)downloadingFailed:(NSString *)nameOfDownload;
+- (void)downloadReady:(NSString *)nameOfDownload;
 
 @end
 
@@ -20,6 +20,6 @@
 @property (nonatomic, strong) NSMutableDictionary *downloadingDictionary;
 @property (nonatomic, weak) id<AMIniateDownloadsDelegate> delegate;
 @property (nonatomic, strong) NSMutableArray *includedNames;
--(void)downloadPodcast:(NSDictionary *)dict; // toPath:(NSString *)path;
-+(AMInitiateDownload *)sharedInitiator;
+- (void)downloadPodcast:(NSDictionary *)dict; // toPath:(NSString *)path;
++ (AMInitiateDownload *)sharedInitiator;
 @end

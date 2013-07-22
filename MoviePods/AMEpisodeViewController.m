@@ -15,7 +15,14 @@
 #import "AEMDownloads.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface AMEpisodeViewController () <AMIniateDownloadsDelegate, AVAudioPlayerDelegate>
+@interface AMEpisodeViewController () <AMIniateDownloadsDelegate, AVAudioPlayerDelegate> {
+    BOOL isPlaying;
+    BOOL wait;
+    BOOL sliderMoved;
+    BOOL sliderViewIsVisible;
+    BOOL playerExists;
+    NSTimer *playTimer;
+}
 @property (weak, nonatomic) IBOutlet UISlider *amSlider;
 @property (weak, nonatomic) IBOutlet UILabel *endLabel;
 @property (weak, nonatomic) IBOutlet UILabel *startLabel;
@@ -41,7 +48,7 @@
 
 @implementation AMEpisodeViewController
 
--(NSArray *)downloadButtonsArray{
+- (NSArray *)downloadButtonsArray{
     if (!_downloadButtonsArray) {
         NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
         for (NSUInteger i = 0; i < [toolbarItems count]; i++) {
@@ -67,7 +74,7 @@
     return _downloadButtonsArray;
 }
 
--(NSArray *)playButtonsArray
+- (NSArray *)playButtonsArray
 {
     if (!_playButtonsArray) {
         NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
@@ -90,7 +97,7 @@
     return _playButtonsArray;
 }
 
--(AVAudioPlayer *)player
+- (AVAudioPlayer *)player
 {
     if (!_player) {
         playerExists = YES;
@@ -118,17 +125,7 @@
     return _player;
 }
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
--(void)fixThePodcastLink
+- (void)fixThePodcastLink
 {
     NSString *burner = [self.episode objectForKey:@"podcastLink"];
     NSString *link = burner.length > 5 ? [self.episode objectForKey:@"podcastLink"] : [self.episode objectForKey:@"link"];
@@ -140,6 +137,12 @@
         
         NSMutableDictionary *tempEpisode = [self.episode mutableCopy];
         [tempEpisode setObject:[summary substringFromIndex:range.location+5] forKey:@"podcastLink"];
+        self.episode = tempEpisode;
+    }
+    if (self.currentPodcast == 7){
+        NSLog(@"Setting for 7");
+        NSMutableDictionary *tempEpisode = [self.episode mutableCopy];
+        [tempEpisode setObject:[self.episode objectForKey:@"linkForLongTail"] forKey:@"podcastLink"];
         self.episode = tempEpisode;
     }
 }
@@ -178,9 +181,9 @@
     sliderViewIsVisible = NO;
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    if (self.currentPodcast == 4) [self fixThePodcastLink]; // mamo puts the link in their summary
+    if (self.currentPodcast == 4 || self.currentPodcast == 7) [self fixThePodcastLink]; // mamo puts the link in their summary
     
     self.episodeTitle.text = [self.episode objectForKey:@"title"];
     if ([self.episode objectForKey:@"date"]) {
@@ -200,7 +203,7 @@
     
 }
 
--(void)viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     if (playerExists) {
@@ -246,7 +249,6 @@
 {
     if (!wait) {
         if (!isPlaying) {
-            //NSLog(@"NotPlaying");
             wait = YES;
             NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
             for (NSUInteger i = 0; i < [toolbarItems count]; i++) {
@@ -267,7 +269,7 @@
     }
 
 }
--(void)setTimeLabels
+- (void)setTimeLabels
 {
     int hours, minutes, seconds;
     hours = (int)self.player.currentTime / 3600;
@@ -276,7 +278,7 @@
     
     int total;
     int totalHours, totalMinutes, totalSeconds;
-    total = (int)self.player.duration -(int)self.player.currentTime;
+    total = (int)self.player.duration - (int)self.player.currentTime;
     totalHours = total/3600;
     totalMinutes = (total % 3600)/60;
     totalSeconds = (total % 3600)%60;
@@ -294,7 +296,7 @@
     wait = NO;
 }
 
--(int)thereAreConnectivityIssues
+- (int)thereAreConnectivityIssues
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL offlineOnly = [defaults boolForKey:@"offlineOnly"];
@@ -311,7 +313,7 @@
     return i;
 }
 
--(BOOL)checkForIssues{
+- (BOOL)checkForIssues{
     int problem = [self thereAreConnectivityIssues];
     if (problem) {
         if (problem == 1) {
@@ -374,9 +376,7 @@
                                            [[AEMDownloads sharedDownloads] deleteEpisodeTitled:[self.episode objectForKey:@"title"] forPodcast:[weakSelf.episode objectForKey:@"name"]];
                                            [toolbarItems replaceObjectAtIndex:i withObject:self.downloadButtonsArray[0]];
                                            weakSelf.toolbar.items = toolbarItems;
-                                           if (sliderViewIsVisible) {
-                                               [weakSelf performSliderViewExitingAnimation];
-                                           }
+                                           if (sliderViewIsVisible) [weakSelf performSliderViewExitingAnimation];
                                        }];
             }
             break;
@@ -394,7 +394,7 @@
      
 }
 
--(BOOL)isAFavorite
+- (BOOL)isAFavorite
 {
     NSString *podcastName = [[GetKeyStrings sharedKeyStrings]nameAtIndex:self.currentPodcast];
     NSArray *arrayOfSavedNames = [[GetAndSaveData sharedGetAndSave]getAllNames];
@@ -404,7 +404,7 @@
             if ([name isEqualToString:podcastName] && [[[GetAndSaveData sharedGetAndSave]favoritesDictionaryForName:podcastName] objectForKey:self.episodeTitle.text]) alreadyPresentInDictionary = YES;
         }
     }
-    NSLog(@"alreadypresent = %c", alreadyPresentInDictionary);
+    //NSLog(@"alreadypresent = %c", alreadyPresentInDictionary);
     return alreadyPresentInDictionary;
 }
 
@@ -430,18 +430,18 @@
     
 }
 
--(BOOL)isPodcastLink:(NSString *)nameOfDownload
+- (BOOL)isPodcastLink:(NSString *)nameOfDownload
 {
     return [nameOfDownload isEqualToString:[self podCastLinkString]];
 }
--(NSString *)podCastLinkString
+- (NSString *)podCastLinkString
 {
     return [[self.episode objectForKey:@"podcastLink"] length] > 5 ? [self.episode objectForKey:@"podcastLink"] : [self.episode objectForKey:@"link"];
 }
 
 #pragma mark - AMInitiateDownload delegate methods
 
--(void)downloadingFailed:(NSString *)nameOfDownload
+- (void)downloadingFailed:(NSString *)nameOfDownload
 {
     if ([self isPodcastLink:nameOfDownload]) {
         NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
@@ -462,7 +462,7 @@
                                onCancel:^(){}];
     }
 }
--(void)downloadReady:(NSString *)nameOfDownload
+- (void)downloadReady:(NSString *)nameOfDownload
 {
     if ([self isPodcastLink:nameOfDownload]) {
         NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
@@ -481,7 +481,7 @@
 
 #pragma mark - Animations
 
--(void)performSliderViewEnteringAnimation
+- (void)performSliderViewEnteringAnimation
 {
     CGSize size = self.view.bounds.size;
     
@@ -504,7 +504,7 @@
     sliderViewIsVisible = YES;
 }
 
--(void)performSliderViewExitingAnimation
+- (void)performSliderViewExitingAnimation
 {
     CGSize size = self.view.bounds.size;
     
@@ -521,13 +521,6 @@
                          weakSelf.sliderView.hidden = YES;
                      }];
     sliderViewIsVisible = NO;
-}
-
--(void)dealloc
-{
-#ifdef DEBUG
-	//NSLog(@"dealloc %@", self);
-#endif
 }
 
 @end

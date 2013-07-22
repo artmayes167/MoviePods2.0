@@ -6,20 +6,15 @@
 //  Copyright (c) 2013 Arthur Mayes. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@interface GetKeyStrings : NSObject{
-    NSDictionary *allKeyStringsDictionary;
-    NSString *path;
-}
+@interface GetKeyStrings : NSObject
 
 +(GetKeyStrings *) sharedKeyStrings;
 
--(NSString *)nameAtIndex:(int)index;
--(NSString *)favoriteNameAtIndex:(int)index;
--(NSString *)addressAtIndex:(int)index;
--(int)indexOfAddress:(NSString *)address;
--(NSString *)imageNameAtIndex:(int)index;
--(NSString *)siteAtIndex:(int)index;
+- (NSString *)nameAtIndex:(int)index;
+- (NSString *)favoriteNameAtIndex:(int)index;
+- (NSString *)addressAtIndex:(int)index;
+- (int)indexOfAddress:(NSString *)address;
+- (NSString *)imageNameAtIndex:(int)index;
+- (NSString *)siteAtIndex:(int)index;
 
 @end

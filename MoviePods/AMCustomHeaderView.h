@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Arthur Mayes. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface AMCustomHeaderView : UIView
 
 @property (nonatomic) int width, height, podcastToLoad;

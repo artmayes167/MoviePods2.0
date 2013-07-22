@@ -10,7 +10,12 @@
 #import "AEMParseNames.h"
 #import "GetAndSaveData.h"
 
-@interface AEMParser ()
+@interface AEMParser () {
+    id delegate;
+    NSMutableDictionary *item;
+    NSString *currentElement;
+    NSString *nameOfPodcast;
+}
 @property (strong, nonatomic) NSData *responseData;
 @property (strong, nonatomic) NSMutableArray *items;
 @property (strong, nonatomic) NSMutableString *currentTitle;
@@ -19,6 +24,7 @@
 @property (strong, nonatomic) NSMutableString *currentLink;
 @property (strong, nonatomic) NSMutableString *currentPodcastLink;
 @property (strong, nonatomic) NSMutableString *itunesSummary;
+@property (strong, nonatomic) NSMutableString *linkForLongTail;
 @end
 
 @implementation AEMParser
@@ -31,10 +37,11 @@
 @synthesize currentLink;
 @synthesize currentPodcastLink;
 @synthesize itunesSummary;
-
+@synthesize linkForLongTail;
 
 //parse feeds that have already been saved in temporary data
--(void)parseFeed:(NSData *)feed withName:(NSString *)name andDelegate:(id)aDelegate{
+- (void)parseFeed:(NSData *)feed withName:(NSString *)name andDelegate:(id)aDelegate
+{
     delegate = aDelegate;
     nameOfPodcast = name;
     self.items = [[NSMutableArray alloc] init];
@@ -49,11 +56,13 @@
 
 #pragma mark rssParser methods
 
--(void)parserDidStartDocument:(NSXMLParser *)parser {
+- (void)parserDidStartDocument:(NSXMLParser *)parser
+{
     
 }
 
--(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
+{
     currentElement = [elementName copy];
     
     if ([elementName isEqualToString:@"item"]) {
@@ -65,19 +74,25 @@
         self.currentLink = [[NSMutableString alloc] init];
         self.currentPodcastLink = [[NSMutableString alloc] init];
         self.itunesSummary = [[NSMutableString alloc] init];
+        self.linkForLongTail = [[NSMutableString alloc] init];
     }
     
     // podcast url is an attribute of the element enclosure
     if ([currentElement isEqualToString:@"enclosure"]) [currentPodcastLink appendString:[attributeDict objectForKey:@"url"]];
 }
 
--(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+{
     
     if ([elementName isEqualToString:@"item"]) {
         [item setObject:[self.currentTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:@"title"];
         [item setObject:[self.currentLink stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:@"link"];
         [item setObject:self.currentSummary forKey:@"summary"];
         [item setObject:self.currentPodcastLink forKey:@"podcastLink"];
+        if (self.linkForLongTail) {
+            [item setObject:self.linkForLongTail forKey:@"linkForLongTail"];
+        }
+        
         
         if (self.itunesSummary.length > 5) [item setObject:self.itunesSummary forKey:@"itunesSummary"];
         
@@ -103,7 +118,8 @@
     }
 }
 
--(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
+{
     if ([currentElement isEqualToString:@"title"]) {
         [self.currentTitle appendString:string];
     } else if ([currentElement isEqualToString:@"link"]) {
@@ -121,10 +137,13 @@
         [self.itunesSummary appendString:string];
     } else if ([currentElement isEqualToString:@"podcastLink"]) {
         [self.currentPodcastLink appendString:string];
+    } else if ([currentElement isEqualToString:@"feedburner:origEnclosureLink"]){
+        [self.linkForLongTail appendString:string];
     }
 }
 
--(void)parserDidEndDocument:(NSXMLParser *)parser {
+- (void)parserDidEndDocument:(NSXMLParser *)parser
+{
     if ([delegate respondsToSelector:@selector(receivedItems:forName:WithTag:)]){
         [delegate receivedItems:items forName:nameOfPodcast WithTag:self.tag];
         //if (self.tag == 4) NSLog(@"%@", items);
@@ -135,12 +154,6 @@
                     format:@"Delegate doesn't respond to receivedItems:"];
     }
     responseData = nil;
-}
--(void)dealloc
-{
-#ifdef DEBUG
-	//NSLog(@"dealloc %@", self);
-#endif
 }
 
 @end

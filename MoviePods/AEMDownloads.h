@@ -6,23 +6,20 @@
 //  Copyright (c) 2012 Arthur Mayes. All rights reserved.
 //
 
-@interface AEMDownloads : NSObject{
-    NSMutableDictionary *allDownloads;
-    NSString *path;
-}
+@interface AEMDownloads : NSObject
 
 +(AEMDownloads *)sharedDownloads;
 
 // Downloads information
--(NSDictionary *)episodeForPodcast:(NSString *)podcast titled:(NSString *)title;
--(void)setEpisode:(NSDictionary *)episode titled:(NSString *)title forPodcast:(NSString *)podcast;
--(void)deleteEpisodeTitled:(NSString *)title forPodcast:(NSString *)podcast;
--(NSArray *)getAllNames;
--(NSMutableDictionary *)allEpisodesForKey:(NSString *)podCast;
+- (NSDictionary *)episodeForPodcast:(NSString *)podcast titled:(NSString *)title;
+- (void)setEpisode:(NSDictionary *)episode titled:(NSString *)title forPodcast:(NSString *)podcast;
+- (void)deleteEpisodeTitled:(NSString *)title forPodcast:(NSString *)podcast;
+- (NSArray *)getAllNames;
+- (NSMutableDictionary *)allEpisodesForKey:(NSString *)podCast;
 
 //Manage the downloads themselves
--(NSData *)getDownloadForKey:(NSString *)string;
--(void)deleteDownloadForKey:(NSString *)string;
+- (NSData *)getDownloadForKey:(NSString *)string;
+- (void)deleteDownloadForKey:(NSString *)string;
 
 
 @end

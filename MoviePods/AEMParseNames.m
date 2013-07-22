@@ -9,7 +9,13 @@
 #import "AEMParseNames.h"
 #import "GetAndSaveData.h"
 
-@interface AEMParseNames ()
+@interface AEMParseNames () {
+    NSMutableDictionary *item;
+    NSString *currentElement;
+    BOOL record;
+    BOOL wrongTitle;
+    NSUInteger index;
+}
 @property (nonatomic, strong) NSArray *arrayToParse;
 @property (nonatomic, strong) NSMutableArray *items;
 
@@ -34,20 +40,20 @@
 @synthesize itunesSummary;
 
 
--(void)parseName:(NSData *)name WithDelegate:(id)aDelegate {
+- (void)parseName:(NSData *)name WithDelegate:(id)aDelegate {
     self.delegate = aDelegate;
     
     index = 0; //reset index
     [self parseFeed:name];
 }
 
--(NSMutableArray *)items
+- (NSMutableArray *)items
 {
     if (!_items) _items = [[NSMutableArray alloc] initWithCapacity:PODCAST_COUNT];
     return _items;
 }
 
--(void)parseFeed:(NSData *)name
+- (void)parseFeed:(NSData *)name
 {
     NSXMLParser *rssParser = [[NSXMLParser alloc] initWithData:name];
     
@@ -59,11 +65,12 @@
 
 #pragma mark rssParser methods
 
--(void)parserDidStartDocument:(NSXMLParser *)parser {
+- (void)parserDidStartDocument:(NSXMLParser *)parser
+{
     wrongTitle = NO; // first title we come across in the document, we will use
 }
 
--(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
     currentElement = [elementName copy];
     
@@ -77,7 +84,7 @@
      
 }
 
--(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
     if (record) {
         if ([currentElement isEqualToString:@"title"]) {
@@ -93,7 +100,7 @@
     }
 }
 
--(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
 {
     if (record) {
         if ([currentElement isEqualToString:@"title"]) {
@@ -107,14 +114,9 @@
     }
 }
 
--(void)parserDidEndDocument:(NSXMLParser *)parser {
-        if ([self.delegate respondsToSelector:@selector(nameReady:forTag:)]) [self.delegate nameReady:item forTag:self.tag];
-}
--(void)dealloc
+- (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-#ifdef DEBUG
-	//NSLog(@"dealloc %@", self);
-#endif
+        if ([self.delegate respondsToSelector:@selector(nameReady:forTag:)]) [self.delegate nameReady:item forTag:self.tag];
 }
 
 @end

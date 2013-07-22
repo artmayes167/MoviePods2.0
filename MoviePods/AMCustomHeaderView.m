@@ -25,9 +25,6 @@
     return self;
 }
 
-
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
  UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.width, self.height)];//90.0)];
@@ -43,11 +40,8 @@
  UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(self.width/3+5, 0.0f, contentRect.size.width - self.width/3-5, contentRect.size.height)];
  
  NSDictionary *podcastDictionary;
- if ([[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds]) {
- podcastDictionary = [[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds][self.podcastToLoad];
- } else {
- podcastDictionary = @{@"description" : @"Unavailable in offline mode", @"itunesSummary" : @"Unavailable in offline mode"};
- }
+ if ([[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds]) podcastDictionary = [[GetAndSaveData sharedGetAndSave]arrayOfParsedNamesFeeds][self.podcastToLoad];
+ else podcastDictionary = @{@"description" : @"Unavailable in offline mode", @"itunesSummary" : @"Unavailable in offline mode"};
  
  label.lineBreakMode = NSLineBreakByWordWrapping;
  label.numberOfLines = 0;

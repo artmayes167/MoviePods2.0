@@ -11,7 +11,8 @@
 
 
 @implementation AMDownloadClient
-+(AMDownloadClient *)sharedDownloadClient
+
++ (AMDownloadClient *)sharedDownloadClient
 {
     static AMDownloadClient *_sharedDownloadClient = nil;
     static dispatch_once_t AMDownloadClientToken;
@@ -22,7 +23,8 @@
     return _sharedDownloadClient;
 }
 
-- (id)initWithBaseURL:(NSURL *)url {
+- (id)initWithBaseURL:(NSURL *)url
+{
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;

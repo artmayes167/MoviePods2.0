@@ -20,38 +20,18 @@
 
 #define WIFI_DEFAULTS_KEY @"wifiOnly"
 #define OFFLINE_DEFAULTS_KEY @"offlineOnly"
--(NSArray *)cellIdentifiers
+- (NSArray *)cellIdentifiers
 {
     if (!_cellIdentifiers) _cellIdentifiers = @[@"WiFi", @"OffLine"];
     return _cellIdentifiers;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    if (self = [super initWithStyle:style]) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-
--(void)viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    //NSLog(@"default wifi = %u", [defaults boolForKey:WIFI_DEFAULTS_KEY]);
     [self.wifiSwitch setOn:[defaults boolForKey:WIFI_DEFAULTS_KEY] animated:NO];
     [self.offlineSwitch setOn:[defaults boolForKey:OFFLINE_DEFAULTS_KEY] animated:NO];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -93,12 +73,7 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
-
--(void)updatePreferences
+- (void)updatePreferences
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:self.wifiSwitch.on forKey:WIFI_DEFAULTS_KEY];
@@ -106,21 +81,16 @@
     [defaults synchronize];
 }
 
-- (IBAction)wiFiOnly:(UISwitch *)sender {
+- (IBAction)wiFiOnly:(UISwitch *)sender
+{
     if (sender.on) if (self.offlineSwitch.on) [self.offlineSwitch setOn:NO animated:YES];
     [self updatePreferences];
 }
 
-- (IBAction)offLineMode:(UISwitch *)sender {
-    //NSLog(@"Switched offline, value = %u", sender.on);
+- (IBAction)offLineMode:(UISwitch *)sender
+{
     if (sender.on && self.wifiSwitch.on) [self.wifiSwitch setOn:NO animated:YES];
     [self updatePreferences];
 }
 
--(void)dealloc
-{
-#ifdef DEBUG
-	//NSLog(@"dealloc %@", self);
-#endif
-}
 @end

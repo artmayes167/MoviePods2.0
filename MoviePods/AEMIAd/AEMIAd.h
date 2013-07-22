@@ -8,15 +8,12 @@
 
 #import <iAd/iAd.h>
 
-@interface AEMIAd : NSObject <ADBannerViewDelegate>{
-    ADBannerView *adView;
-    BOOL bannerIsVisible;
-}
+@interface AEMIAd : NSObject <ADBannerViewDelegate>
 
 @property (nonatomic, strong) ADBannerView *adView;
 
 +(AEMIAd *)sharedAd;
 
--(void) attachAdToView:(UIView *)view;
+- (void) attachAdToView:(UIView *)view;
 
 @end

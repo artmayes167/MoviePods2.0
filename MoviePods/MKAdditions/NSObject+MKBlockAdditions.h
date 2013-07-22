@@ -10,7 +10,7 @@
 
 @interface NSObject (MKBlockAdditions)
 
--(void) performBlock:(VoidBlock) block;
--(void) performBlock:(VoidBlock) block afterDelay:(NSTimeInterval) delay;
+- (void) performBlock:(VoidBlock) block;
+- (void) performBlock:(VoidBlock) block afterDelay:(NSTimeInterval) delay;
 
 @end

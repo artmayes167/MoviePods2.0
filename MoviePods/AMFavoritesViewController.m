@@ -22,13 +22,13 @@
 
 @implementation AMFavoritesViewController
 
--(int)podcastToLoad
+- (int)podcastToLoad
 {
     AMAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     return appDelegate.podcastToShow;
 }
 
--(NSArray *)currentItemArray{
+- (NSArray *)currentItemArray{
     if(!_currentItemArray)
     {
         if (self.view.tag < PODCAST_COUNT) {
@@ -50,15 +50,6 @@
     return _currentItemArray;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    
-    if (self = [super initWithStyle:style]) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -71,7 +62,7 @@
     self.tableView.tableHeaderView = headerView;
 }
 
--(void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
     self.currentItemArray = nil;
     [super viewWillAppear:animated];
@@ -104,9 +95,8 @@
     return cell;
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UITableViewCell *)sender
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UITableViewCell *)sender
 {
-    //NSLog(@"sender's class is %@", [sender class]);
     AMEpisodeViewController *episodeVC = (AMEpisodeViewController *)segue.destinationViewController;
     episodeVC.currentPodcast = self.podcastToLoad;
     episodeVC.episode = self.currentItemArray[sender.tag];

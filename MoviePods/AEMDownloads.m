@@ -12,14 +12,18 @@
 
 static AEMDownloads *sharedDownloads;
 
-@interface AEMDownloads ()
+@interface AEMDownloads () {
+    NSMutableDictionary *allDownloads;
+    NSString *path;
+}
 @property (nonatomic, strong) NSString *pathStarter;
 @property (nonatomic, strong) NSMutableArray *allNames;
 @end
 
 @implementation AEMDownloads
 
--(id)init{
+- (id)init
+{
     
     self = [super init];
 
@@ -49,7 +53,7 @@ static AEMDownloads *sharedDownloads;
 //So we need two NSStrings as points of reference to pull out information
 //And we need to check to see if that information exists before returning it
 
--(NSDictionary *)episodeForPodcast:(NSString *)podcast titled:(NSString *)title
+- (NSDictionary *)episodeForPodcast:(NSString *)podcast titled:(NSString *)title
 {
     if ([allDownloads objectForKey:podcast]) {
         if ([[allDownloads objectForKey:podcast] objectForKey:title]) { // redundancy for safety
@@ -58,11 +62,10 @@ static AEMDownloads *sharedDownloads;
     }
     return nil;
 }
--(void)setEpisode:(NSDictionary *)episode titled:(NSString *)title forPodcast:(NSString *)podcast
+- (void)setEpisode:(NSDictionary *)episode titled:(NSString *)title forPodcast:(NSString *)podcast
 {
-    if ([allDownloads objectForKey:podcast]) {
-        [[allDownloads objectForKey:podcast] setObject:episode forKey:title];
-    } else {
+    if ([allDownloads objectForKey:podcast]) [[allDownloads objectForKey:podcast] setObject:episode forKey:title];
+    else {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjects:@[episode] forKeys:@[title]];
         [allDownloads setObject:dict forKey:podcast];
     }
@@ -75,7 +78,7 @@ static AEMDownloads *sharedDownloads;
     }
 
 }
--(void)deleteEpisodeTitled:(NSString *)title forPodcast:(NSString *)podcast
+- (void)deleteEpisodeTitled:(NSString *)title forPodcast:(NSString *)podcast
 {
     if ([allDownloads objectForKey:podcast]) {
         if ([[allDownloads objectForKey:podcast] objectForKey:title]) {
@@ -85,13 +88,13 @@ static AEMDownloads *sharedDownloads;
         }
     }
 }
--(NSArray *)getAllNames{
-    
+- (NSArray *)getAllNames
+{
     return [allDownloads allKeys];
 }
 
 
--(NSMutableDictionary *)allEpisodesForKey:(NSString *)podCast
+- (NSMutableDictionary *)allEpisodesForKey:(NSString *)podCast
 {
     NSMutableDictionary *dict = [allDownloads objectForKey:podCast];
     return dict;
@@ -99,20 +102,22 @@ static AEMDownloads *sharedDownloads;
 
 #pragma mark - Get/Delete Download
 
--(NSString *)pathStarter
+- (NSString *)pathStarter
 {
     if (!_pathStarter) _pathStarter = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
     return _pathStarter;
 }
 
--(NSData *)getDownloadForKey:(NSString *)string{
+- (NSData *)getDownloadForKey:(NSString *)string
+{
     NSString *pathForDownload = [self.pathStarter stringByAppendingPathComponent:string];
     
     NSData *download = [NSData dataWithContentsOfFile:pathForDownload];
     return download;
 }
 
--(void)deleteDownloadForKey:(NSString *)string{
+- (void)deleteDownloadForKey:(NSString *)string
+{
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
@@ -121,7 +126,8 @@ static AEMDownloads *sharedDownloads;
     [fileManager removeItemAtPath:dataPath error:&error];
 }
 
-+(AEMDownloads *)sharedDownloads{
++(AEMDownloads *)sharedDownloads
+{
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

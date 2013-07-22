@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Arthur Mayes. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface AMTabBarViewController : UITabBarController
 
 @end

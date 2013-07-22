@@ -12,7 +12,7 @@ static VoidBlock _block;
 
 @implementation NSObject (MKBlockAdditions)
 
--(void) performBlock:(VoidBlock) aBlock
+- (void) performBlock:(VoidBlock) aBlock
 {
    // [_block release];     
     _block = [aBlock copy];
@@ -20,7 +20,7 @@ static VoidBlock _block;
     [self performSelector:@selector(callBlock)];
 }
 
--(void) performBlock:(VoidBlock) aBlock afterDelay:(NSTimeInterval) delay
+- (void) performBlock:(VoidBlock) aBlock afterDelay:(NSTimeInterval) delay
 {
     //[_block release];     
     _block = [aBlock copy];
@@ -28,7 +28,7 @@ static VoidBlock _block;
     [self performSelector:@selector(callBlock) withObject:nil afterDelay:delay];
 }
 
--(void) callBlock
+- (void) callBlock
 {
     _block();
     //[_block release];
